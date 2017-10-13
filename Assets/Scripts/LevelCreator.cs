@@ -29,7 +29,7 @@ public class LevelCreator : MonoBehaviour
             upperFloor.transform.position = Vector3.Lerp(new Vector3(0f, GameMetrics.upperFloorY, 0f),
                 Vector3.zero, (Time.time - startTime) / GameMetrics.dropDuration);
             actualFloor.transform.position = Vector3.Lerp(Vector3.zero,
-                new Vector3(0f, -GameMetrics.tileSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
+                new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
             if (upperFloor.transform.position.y == 0f)
             {
                 targetReached = true;

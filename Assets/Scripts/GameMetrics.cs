@@ -6,11 +6,12 @@ public static class GameMetrics
 {
     #region Map
 
-    public static float tileSize = 2f;
+    public static float tileHorizontalSize = 2f;
+    public static float tileVerticalSize = 1f;
     public static int floorSize = 20;
     public static float upperFloorY = 10f;
     public static float dropSpeed = 5f;
-    public static float dropDuration = 3f;
+    public static float dropDuration = 1f;
 
     #endregion
 

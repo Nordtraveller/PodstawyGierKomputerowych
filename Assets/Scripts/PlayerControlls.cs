@@ -7,7 +7,7 @@ public class PlayerControlls : MonoBehaviour
     private Rigidbody body;
     private float distanceToGround;
 
-	void Start ()
+    void Start ()
     {
         body = GetComponentInChildren<Rigidbody>();
         distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;

@@ -22,7 +22,7 @@ public class Floor : MonoBehaviour
         {
             if(i != entranceTileNumber)
             {
-                Instantiate(tilePrefab, new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f), this.transform.rotation, this.transform);
+                Instantiate(tilePrefab, new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f), this.transform.rotation, this.transform);
             }
         }
         CreateExitTile();
@@ -36,8 +36,7 @@ public class Floor : MonoBehaviour
         }
         while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < floorSize/3 );
         Instantiate(transform.parent.GetComponent<LevelCreator>().exitPrefab,
-            new Vector3(exitTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f), this.transform.rotation, this.transform);
-        Debug.Log(exitTileNumber);
+            new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f), this.transform.rotation, this.transform);
     }
 
     public int GetExitTileNumber()

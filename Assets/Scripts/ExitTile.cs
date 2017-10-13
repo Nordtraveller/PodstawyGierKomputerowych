@@ -5,7 +5,6 @@ using UnityEngine;
 public class ExitTile : MonoBehaviour
 {
     private LevelCreator creator;
-    private bool triggered = false;
 
     private void Awake()
     {
@@ -14,11 +13,10 @@ public class ExitTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!triggered || other.tag == "Player")
+        if(other.tag == "Player")
         {
-            triggered = true;
-            Debug.Log("Wychodzimy");
             creator.DropUpperFloor();
+            Destroy(this);
         }
     }
 

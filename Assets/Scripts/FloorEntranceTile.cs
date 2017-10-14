@@ -2,24 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExitTile : MonoBehaviour
+public class FloorEntranceTile : MonoBehaviour
 {
-    private LevelCreator creator;
     private PlayerStatus player;
 
-    private void Awake()
+    private void Start()
     {
-        creator = GetComponentInParent<LevelCreator>();
         player = GameObject.Find("Player").GetComponent<PlayerStatus>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player" && player.haveKey == true )
+        if(player.haveKey)
         {
-            creator.DropUpperFloor();
-            Destroy(this);
+            player.haveKey = false;
+            Destroy(GetComponent<BoxCollider>());
         }
     }
-
 }

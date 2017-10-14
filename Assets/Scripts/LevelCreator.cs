@@ -6,6 +6,7 @@ public class LevelCreator : MonoBehaviour
 {
     public Floor[] floorPrefabList;
     public ExitTile exitPrefab;
+    public FloorEntranceTile entrancePrefab;
 
     private int exitTileNumber;
     private Floor newFloor;

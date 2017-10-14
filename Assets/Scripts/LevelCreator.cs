@@ -15,6 +15,7 @@ public class LevelCreator : MonoBehaviour
     private Floor previousFloor;
     private bool targetReached = true;
     private float startTime;
+    private float timeLeft = GameMetrics.timeForFloor;
 
     private void Awake()
     {
@@ -33,11 +34,22 @@ public class LevelCreator : MonoBehaviour
                 new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
             if (upperFloor.transform.position.y == 0f)
             {
+                timeLeft = GameMetrics.timeForFloor;
                 targetReached = true;
                 if(previousFloor != null) Destroy(previousFloor.gameObject);
                 previousFloor = actualFloor;
                 actualFloor = upperFloor;
                 upperFloor = newFloor;
+                previousFloor.DeleteTraps();
+            }
+        }
+        else
+        {
+            timeLeft -= Time.deltaTime;
+            Debug.Log(timeLeft);
+            if(timeLeft < 0)
+            {
+                DropUpperFloor();
             }
         }
     }

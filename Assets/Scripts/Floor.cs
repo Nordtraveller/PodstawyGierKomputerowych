@@ -89,19 +89,10 @@ public class Floor : MonoBehaviour
 
     private bool CheckTrapPosition(int position)
     {
-        bool before = false;
-        bool beforebefore = false;
-        bool after = false;
-        bool afterafter = false;
         for (int i = 0; i < trapList.Count; i++)
         {
             if (trapList[i].positionOnFloor == position) return true;
-            if (trapList[i].positionOnFloor == position - 2) beforebefore = true;
-            if (trapList[i].positionOnFloor == position - 1) before = true;
-            if (trapList[i].positionOnFloor == position + 1) after = true;
-            if (trapList[i].positionOnFloor == position + 2) afterafter = true;
         }
-        if ((before && after) || (beforebefore && before) || (after && afterafter)) return true;
         return false;
     }
 

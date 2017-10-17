@@ -16,7 +16,12 @@ public class FloorEntranceTile : MonoBehaviour
         if(player.haveKey)
         {
             player.haveKey = false;
-            Destroy(GetComponent<BoxCollider>());
+            Destroy(this.gameObject);
         }
+
+        /*if(player.haveKey == false)
+        {
+            Destroy(player.gameObject);
+        }*/
     }
 }

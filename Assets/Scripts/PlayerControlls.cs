@@ -18,6 +18,8 @@ public class PlayerControlls : MonoBehaviour
         Vector3 posistion = transform.position;
         posistion.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
         transform.position = posistion;
+        //To poniżej się przyda do chodzenia po lodzie
+        //body.AddForce(new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed, 0f, 0f), ForceMode.VelocityChange);
 
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {

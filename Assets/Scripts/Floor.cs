@@ -73,25 +73,34 @@ public class Floor : MonoBehaviour
 
         for(int i = 0; i < GameMetrics.numberOfTraps; i++)
         {
+            Trap prefab = trapsPrefabs[Random.Range(0, trapsPrefabs.Length)];
             do
             {
                 trapTileNumber = Random.Range(0, floorSize);
             }
             while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber 
-            || CheckTrapPosition(trapTileNumber));
-            Trap prefab = trapsPrefabs[Random.Range(0, trapsPrefabs.Length)];
+            || CheckTrapPosition(trapTileNumber, prefab.size));
             Trap trap = Instantiate(prefab,
                 new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
                 prefab.transform.rotation, this.transform);
+            trap.SetPositionOnFloor(trapTileNumber);
             trapList.Add(trap);
         }
     }
 
-    private bool CheckTrapPosition(int position)
+    private bool CheckTrapPosition(int position, int trapSize)
     {
+        if (entranceTileNumber == -1 && position == 0) return true;
+       
         for (int i = 0; i < trapList.Count; i++)
         {
-            if (trapList[i].positionOnFloor == position) return true;
+            for (int j = 0; j < trapList[i].positionOnFloor.Length; j++)
+            {
+                for (int k = 0; k < trapSize; k++)
+                {
+                    if (trapList[i].positionOnFloor[j] == position + k) return true;
+                }
+            }
         }
         return false;
     }

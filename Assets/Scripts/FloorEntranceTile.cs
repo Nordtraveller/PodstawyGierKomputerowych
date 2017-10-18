@@ -18,10 +18,9 @@ public class FloorEntranceTile : MonoBehaviour
             player.haveKey = false;
             Destroy(this.gameObject);
         }
-
-        /*if(player.haveKey == false)
+        else
         {
             Destroy(player.gameObject);
-        }*/
+        }
     }
 }

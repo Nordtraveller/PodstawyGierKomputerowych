@@ -14,5 +14,5 @@ public class Trap : MonoBehaviour
         {
             positionOnFloor[i] = position + i;
         }
-    }       
+    }
 }

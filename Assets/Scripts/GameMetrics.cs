@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class GameMetrics
 {
+    public static float gravity = 10.0f;
+
     #region Map
 
     public static float tileHorizontalSize = 2f;
@@ -20,7 +22,7 @@ public static class GameMetrics
     #region Player
 
     public static float playerSpeed = 10f;
-    public static float playerJumpForce = 21f;
+    public static float playerJumpForce = 12f;
     public static float playerRaycastDistance = 2f;
 
     #endregion

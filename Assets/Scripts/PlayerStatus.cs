@@ -12,8 +12,11 @@ public class PlayerStatus : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
 
-        if(collision.collider.tag == "Key")
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Key")
         {
             haveKey = true;
         }

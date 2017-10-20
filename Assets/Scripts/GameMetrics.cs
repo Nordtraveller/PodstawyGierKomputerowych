@@ -11,7 +11,7 @@ public static class GameMetrics
     public static float tileHorizontalSize = 2f;
     public static float tileVerticalSize = 1f;
     public static int floorSize = 20;
-    public static int numberofTrappedTiles = floorSize / 6;
+    public static int numberofTrappedTiles = floorSize / 4;
     public static float upperFloorY = 10f;
     public static float dropSpeed = 5f;
     public static float dropDuration = 1f;

@@ -16,10 +16,12 @@ public class LevelCreator : MonoBehaviour
     private bool targetReached = true;
     private float startTime;
     private float timeLeft = GameMetrics.timeForFloor;
+    private PlayerControlls player;
 
     private void Awake()
     {
         CreateFirstFloor();
+        player = GameObject.Find("Player").GetComponent<PlayerControlls>();
     }
 
     private void Update()
@@ -32,6 +34,8 @@ public class LevelCreator : MonoBehaviour
                 Vector3.zero, (Time.time - startTime) / GameMetrics.dropDuration);
             actualFloor.transform.position = Vector3.Lerp(Vector3.zero,
                 new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
+            player.transform.position = new Vector3(actualFloor.GetExitTileNumber() * GameMetrics.tileHorizontalSize
+                , player.transform.position.y, 0.0f);
             if (upperFloor.transform.position.y == 0f)
             {
                 timeLeft = GameMetrics.timeForFloor;

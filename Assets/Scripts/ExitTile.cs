@@ -6,11 +6,13 @@ public class ExitTile : MonoBehaviour
 {
     private LevelCreator creator;
     private PlayerStatus player;
+    private PlayerControlls playerControlls;
 
     private void Awake()
     {
         creator = GetComponentInParent<LevelCreator>();
         player = GameObject.Find("Player").GetComponent<PlayerStatus>();
+        playerControlls = GameObject.Find("Player").GetComponent<PlayerControlls>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +20,7 @@ public class ExitTile : MonoBehaviour
         if(other.tag == "Player" && player.haveKey == true )
         {
             creator.DropUpperFloor();
+            playerControlls.onFire = false;
             Destroy(this);
         }
     }

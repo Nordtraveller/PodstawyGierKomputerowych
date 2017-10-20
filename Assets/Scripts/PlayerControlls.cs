@@ -7,22 +7,33 @@ public class PlayerControlls : MonoBehaviour
     private Rigidbody body;
     private float distanceToGround;
     private RaycastHit hit;
+    private float direction = 0;
+
+    public bool onFire = false;
 
     void Start ()
     {
         body = GetComponentInChildren<Rigidbody>();
         distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;
     }
-	
-	void FixedUpdate ()
+
+    void FixedUpdate ()
     {
-        Vector3 posistion = transform.position;
-        posistion.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
-        transform.position = posistion;
+        Vector3 position = transform.position;
+        if (onFire)
+        {
+            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
+            if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
+            if (Input.GetAxis("Horizontal") > 0) direction = 0.8f;
+        }
+        else
+        {
+            position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
+        }
+        transform.position = position;
         if (Input.GetButton("Jump") && IsGrounded())
         {
-            //body.AddForce(new Vector3(0f, GameMetrics.playerJumpForce, 0f), ForceMode.Impulse);
-            body.velocity += new Vector3(0, GameMetrics.playerJumpForce, 0);
+            body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }
     }
 

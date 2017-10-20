@@ -21,7 +21,7 @@ public static class GameMetrics
 
     #region Player
 
-    public static float playerSpeed = 10f;
+    public static float playerSpeed = 8f;
     public static float playerJumpForce = 12f;
     public static float playerRaycastDistance = 2f;
 

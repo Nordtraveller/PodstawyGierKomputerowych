@@ -14,11 +14,13 @@ public class Floor : MonoBehaviour
     private int exitTileNumber;
     private int keyTileNumber;
     private List<Trap> trapList;
+    private List<int> tilesList;
 
     void Awake()
     {
         floorSize = GameMetrics.floorSize;
         trapList = new List<Trap>();
+        tilesList = new List<int>();
     }
 
     public void CreateTiles()
@@ -30,6 +32,7 @@ public class Floor : MonoBehaviour
                 Instantiate(tilePrefab, 
                     new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f), 
                     this.transform.rotation, this.transform);
+                tilesList.Add(i);
             }
             else
             {
@@ -47,9 +50,10 @@ public class Floor : MonoBehaviour
     {
         do
         {
-            exitTileNumber = Random.Range(0, floorSize);
+            exitTileNumber = Random.Range(0, tilesList.Count);
         }
         while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < floorSize/3 );
+        tilesList.RemoveAt(exitTileNumber);
         Instantiate(transform.parent.GetComponent<LevelCreator>().exitPrefab,
             new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f), 
             this.transform.rotation, this.transform);
@@ -59,9 +63,10 @@ public class Floor : MonoBehaviour
     {
         do
         {
-            keyTileNumber = Random.Range(0, floorSize);
+            keyTileNumber = Random.Range(0, tilesList.Count);
         }
         while (keyTileNumber == entranceTileNumber || keyTileNumber == exitTileNumber);
+        tilesList.RemoveAt(keyTileNumber);
         Instantiate(keyPrefab, 
             new Vector3(keyTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
@@ -73,47 +78,62 @@ public class Floor : MonoBehaviour
 
         for(int i = 0; i < GameMetrics.numberofTrappedTiles;)
         {
-            Trap prefab = trapsPrefabs[Random.Range(0, trapsPrefabs.Length)];
+            Trap prefab;
+            int tryCounter = 0;
             do
             {
-                trapTileNumber = Random.Range(0, floorSize);
+                prefab = trapsPrefabs[Random.Range(0, trapsPrefabs.Length)];
+                trapTileNumber = tilesList[Random.Range(0, tilesList.Count)];
+                tryCounter++;
             }
             while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber 
-            || CheckTrapPosition(trapTileNumber, prefab.size));
+            || CheckTrapPosition(trapTileNumber, prefab.size) || tryCounter < 10);
             Trap trap = Instantiate(prefab,
                 new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
                 prefab.transform.rotation, this.transform);
+            for (int a = 0; a<trap.size; a++)
+            {
+                tilesList.Remove(trapTileNumber + a);
+            }
             trap.SetPositionOnFloor(trapTileNumber);
             trapList.Add(trap);
             i += trap.size;
         }
     }
 
-    private bool CheckTrapPosition(int position, int trapSize)
+    private bool CheckTrapPosition(int tileNumber, int trapSize)
     {
-        if (position > (floorSize - trapSize)) return true;
-        if (entranceTileNumber == -1 && position == 0) return true;
+        int position = tilesList.IndexOf(tileNumber);
+        if (tileNumber > (floorSize - trapSize)) return true;
+        if (position+trapSize > tilesList.Count) return true;
+        if (entranceTileNumber == -1 && tileNumber == 0) return true;
+
        
-        for(int i = 1; i<trapSize; i++)
+        for (int a = 0; a < trapSize; a++)
         {
-        if ((position + i == entranceTileNumber)
-         || (position + i == exitTileNumber)
-         || (position + i == keyTileNumber))
-                return true;
+            if (tilesList[position + a] != tileNumber + a) return true;
         }
 
-        for (int i = 0; i < trapList.Count; i++)
-        {
-            for (int j = 0; j < trapList[i].positionOnFloor.Length; j++)
+            /*for(int i = 1; i<trapSize; i++)
             {
-                for (int k = 0; k < trapSize; k++)
-                {
-                    if ((trapList[i].positionOnFloor[j] == position + k)
-                        ) return true;
-                }
+            if ((position + i == entranceTileNumber)
+             || (position + i == exitTileNumber)
+             || (position + i == keyTileNumber))
+                    return true;
             }
-        }
-        return false;
+
+            for (int i = 0; i < trapList.Count; i++)
+            {
+                for (int j = 0; j < trapList[i].positionOnFloor.Length; j++)
+                {
+                    for (int k = 0; k < trapSize; k++)
+                    {
+                        if ((trapList[i].positionOnFloor[j] == position + k)
+                            ) return true;
+                    }
+                }
+            }*/
+            return false;
     }
 
     public void DeleteTraps()

@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCreator : MonoBehaviour
 {
     public Floor[] floorPrefabList;
     public ExitTile exitPrefab;
     public FloorEntranceTile entrancePrefab;
+	public Text	ui_text_timeLeft;
 
     private int exitTileNumber;
     private Floor newFloor;
@@ -50,10 +52,21 @@ public class LevelCreator : MonoBehaviour
         else
         {
             timeLeft -= Time.deltaTime;
-            Debug.Log(timeLeft);
+            //Debug.Log(timeLeft);
+
+			// Initial implementation of drawing text on screen.
+			// !!! Don't forget to drag "ui_text_timeLeft" from Hierarchy to 
+			// TODO: 
+			// Size, color etc. to modify later
+			// "Game over" after collision with trap
+
+			int nTimeLeft = (int)timeLeft;
+			ui_text_timeLeft.text = "Time Left: " +  nTimeLeft.ToString ();
+
             if(timeLeft < 0)
             {
                 DropUpperFloor();
+				ui_text_timeLeft.text = "Game Over";
             }
         }
     }

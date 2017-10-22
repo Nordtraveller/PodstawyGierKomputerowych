@@ -6,6 +6,7 @@ public class Floor : MonoBehaviour
 {
     public int floorSize;
     public int entranceTileNumber; //numer tile który ma być pusty żeby dało się wejść na piętro
+    public float timeForFloor;
 
     public GameObject tilePrefab;
     public GameObject keyPrefab;
@@ -27,10 +28,10 @@ public class Floor : MonoBehaviour
     {
         for (int i = 0; i < floorSize; i++)
         {
-            if(i != entranceTileNumber)
+            if (i != entranceTileNumber)
             {
-                Instantiate(tilePrefab, 
-                    new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f), 
+                Instantiate(tilePrefab,
+                    new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f),
                     this.transform.rotation, this.transform);
                 tilesList.Add(i);
             }
@@ -44,6 +45,7 @@ public class Floor : MonoBehaviour
         CreateExitTile();
         CreateKey();
         CreateTraps();
+        CountTimeForFloor();
     }
 
     private void CreateExitTile()
@@ -52,10 +54,10 @@ public class Floor : MonoBehaviour
         {
             exitTileNumber = Random.Range(0, tilesList.Count);
         }
-        while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < floorSize/3 );
+        while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < floorSize / 3);
         tilesList.RemoveAt(exitTileNumber);
         Instantiate(transform.parent.GetComponent<LevelCreator>().exitPrefab,
-            new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f), 
+            new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
     }
 
@@ -67,7 +69,7 @@ public class Floor : MonoBehaviour
         }
         while (keyTileNumber == entranceTileNumber || keyTileNumber == exitTileNumber);
         tilesList.RemoveAt(keyTileNumber);
-        Instantiate(keyPrefab, 
+        Instantiate(keyPrefab,
             new Vector3(keyTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
     }
@@ -76,7 +78,7 @@ public class Floor : MonoBehaviour
     {
         int trapTileNumber;
 
-        for(int i = 0; i < GameMetrics.numberofTrappedTiles;)
+        for (int i = 0; i < GameMetrics.numberofTrappedTiles;)
         {
             Trap prefab;
             int tryCounter = 0;
@@ -86,12 +88,12 @@ public class Floor : MonoBehaviour
                 trapTileNumber = tilesList[Random.Range(0, tilesList.Count)];
                 tryCounter++;
             }
-            while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber 
+            while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber
             || CheckTrapPosition(trapTileNumber, prefab.size) || tryCounter < 10);
             Trap trap = Instantiate(prefab,
                 new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
                 prefab.transform.rotation, this.transform);
-            for (int a = 0; a<trap.size; a++)
+            for (int a = 0; a < trap.size; a++)
             {
                 tilesList.Remove(trapTileNumber + a);
             }
@@ -105,35 +107,15 @@ public class Floor : MonoBehaviour
     {
         int position = tilesList.IndexOf(tileNumber);
         if (tileNumber > (floorSize - trapSize)) return true;
-        if (position+trapSize > tilesList.Count) return true;
+        if (position + trapSize > tilesList.Count) return true;
         if (entranceTileNumber == -1 && tileNumber == 0) return true;
 
-       
+
         for (int a = 0; a < trapSize; a++)
         {
             if (tilesList[position + a] != tileNumber + a) return true;
         }
-
-            /*for(int i = 1; i<trapSize; i++)
-            {
-            if ((position + i == entranceTileNumber)
-             || (position + i == exitTileNumber)
-             || (position + i == keyTileNumber))
-                    return true;
-            }
-
-            for (int i = 0; i < trapList.Count; i++)
-            {
-                for (int j = 0; j < trapList[i].positionOnFloor.Length; j++)
-                {
-                    for (int k = 0; k < trapSize; k++)
-                    {
-                        if ((trapList[i].positionOnFloor[j] == position + k)
-                            ) return true;
-                    }
-                }
-            }*/
-            return false;
+        return false;
     }
 
     public void DeleteTraps()
@@ -148,7 +130,12 @@ public class Floor : MonoBehaviour
     {
         return exitTileNumber;
     }
-	
+
+    private void CountTimeForFloor()
+    {
+        float multiplier = 1f;
+        int distanceFromEntranceToKey = Mathf.Abs(Mathf.Abs(entranceTileNumber) - keyTileNumber);
+        int distanceFromKeyToExit = Mathf.Abs(keyTileNumber - exitTileNumber);
+        timeForFloor = (distanceFromEntranceToKey + distanceFromKeyToExit) * multiplier;
+    }
 }
-
-

@@ -13,17 +13,9 @@ public class FireTile : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if(collision.collider.tag == "Player")
+        if (collision.collider.tag == "Player")
         {
-            if(transform.position.x / GameMetrics.tileHorizontalSize == GetComponentInParent<Floor>().GetExitTileNumber() 
-                && GameObject.FindWithTag("Player").GetComponent<PlayerStatus>().haveKey == true)
-            {
-                player.fireFloor = false;
-            }
-            else
-            {
-                player.fireFloor = true;
-            }
+            player.fireFloor = true;
         }
     }
 

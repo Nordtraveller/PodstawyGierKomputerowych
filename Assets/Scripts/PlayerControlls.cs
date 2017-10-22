@@ -10,6 +10,7 @@ public class PlayerControlls : MonoBehaviour
     private float direction = 0;
 
     public bool onFire = false;
+    public bool isBouncing = false;
 
     void Start ()
     {
@@ -19,6 +20,7 @@ public class PlayerControlls : MonoBehaviour
 
     void FixedUpdate ()
     {
+
         Vector3 position = transform.position;
         if (onFire)
         {
@@ -31,7 +33,13 @@ public class PlayerControlls : MonoBehaviour
             position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
         }
         transform.position = position;
-        if (Input.GetButton("Jump") && IsGrounded())
+
+
+        if (IsGrounded() && isBouncing)
+        {
+            body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+        }
+        if (Input.GetButton("Jump") && IsGrounded() && !isBouncing)
         {
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }

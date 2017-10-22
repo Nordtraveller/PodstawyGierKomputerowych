@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 
 public class CameraController : MonoBehaviour {
 
@@ -14,5 +15,9 @@ public class CameraController : MonoBehaviour {
             newPosition.x = player.transform.position.x;
             transform.position = newPosition;
         }
+
+		if (Input.GetKeyDown (KeyCode.F5)) {
+			EditorSceneManager.LoadScene (EditorSceneManager.GetActiveScene ().name);
+		}
 	}
 }

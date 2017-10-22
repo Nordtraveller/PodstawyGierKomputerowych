@@ -20,8 +20,8 @@ public class ExitTile : MonoBehaviour
         if(other.tag == "Player" && player.haveKey == true )
         {
             creator.DropUpperFloor();
-            playerControlls.onFire = false;
-            playerControlls.isBouncing = false;
+            playerControlls.fireFloor = false;
+            playerControlls.bouncyFloor = false;
             Destroy(this);
         }
     }

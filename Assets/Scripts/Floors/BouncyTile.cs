@@ -18,11 +18,11 @@ public class BouncyTile : MonoBehaviour {
             if (transform.position.x / GameMetrics.tileHorizontalSize == GetComponentInParent<Floor>().GetExitTileNumber()
                 && GameObject.FindWithTag("Player").GetComponent<PlayerStatus>().haveKey == true)
             {
-                player.isBouncing = false;
+                player.bouncyFloor = false;
             }
             else
             {
-                player.isBouncing = true;
+                player.bouncyFloor = true;
             }
         }
     }

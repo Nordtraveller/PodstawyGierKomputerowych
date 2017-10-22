@@ -18,11 +18,11 @@ public class FireTile : MonoBehaviour
             if(transform.position.x / GameMetrics.tileHorizontalSize == GetComponentInParent<Floor>().GetExitTileNumber() 
                 && GameObject.FindWithTag("Player").GetComponent<PlayerStatus>().haveKey == true)
             {
-                player.onFire = false;
+                player.fireFloor = false;
             }
             else
             {
-                player.onFire = true;
+                player.fireFloor = true;
             }
         }
     }

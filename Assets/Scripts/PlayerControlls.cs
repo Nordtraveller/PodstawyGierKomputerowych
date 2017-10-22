@@ -9,8 +9,8 @@ public class PlayerControlls : MonoBehaviour
     private RaycastHit hit;
     private float direction = 0;
 
-    public bool onFire = false;
-    public bool isBouncing = false;
+    public bool fireFloor = false;
+    public bool bouncyFloor = false;
 
     void Start ()
     {
@@ -22,7 +22,7 @@ public class PlayerControlls : MonoBehaviour
     {
 
         Vector3 position = transform.position;
-        if (onFire)
+        if (fireFloor)
         {
             position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
@@ -35,11 +35,11 @@ public class PlayerControlls : MonoBehaviour
         transform.position = position;
 
 
-        if (IsGrounded() && isBouncing)
+        if (IsGrounded() && bouncyFloor)
         {
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }
-        if (Input.GetButton("Jump") && IsGrounded() && !isBouncing)
+        if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
         {
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }

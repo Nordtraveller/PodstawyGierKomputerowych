@@ -15,12 +15,7 @@ public class BouncyTile : MonoBehaviour {
     {
         if (collision.collider.tag == "Player")
         {
-            if (transform.position.x / GameMetrics.tileHorizontalSize == GetComponentInParent<Floor>().GetExitTileNumber()
-                && GameObject.FindWithTag("Player").GetComponent<PlayerStatus>().haveKey == true)
-            {
-                player.bouncyFloor = false;
-            }
-            else
+            if (collision.collider.tag == "Player")
             {
                 player.bouncyFloor = true;
             }

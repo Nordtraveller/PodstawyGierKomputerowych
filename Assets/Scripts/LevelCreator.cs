@@ -8,7 +8,7 @@ public class LevelCreator : MonoBehaviour
     public Floor[] floorPrefabList;
     public ExitTile exitPrefab;
     public FloorEntranceTile entrancePrefab;
-	public Text	ui_text_timeLeft;
+    public Text ui_text_timeLeft;
 
     private int exitTileNumber;
     private Floor newFloor;
@@ -17,7 +17,7 @@ public class LevelCreator : MonoBehaviour
     private Floor previousFloor;
     private bool targetReached = true;
     private float startTime;
-    private float timeLeft = GameMetrics.timeForFloor;
+    private float timeLeft;
     private PlayerControlls player;
 
     private void Awake()
@@ -28,9 +28,9 @@ public class LevelCreator : MonoBehaviour
 
     private void Update()
     {
-        if(!targetReached)
+        if (!targetReached)
         {
-            newFloor.transform.position = Vector3.Lerp(new Vector3(0f, 2* GameMetrics.upperFloorY, 0f),
+            newFloor.transform.position = Vector3.Lerp(new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
                  new Vector3(0f, GameMetrics.upperFloorY, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
             upperFloor.transform.position = Vector3.Lerp(new Vector3(0f, GameMetrics.upperFloorY, 0f),
                 Vector3.zero, (Time.time - startTime) / GameMetrics.dropDuration);
@@ -40,12 +40,12 @@ public class LevelCreator : MonoBehaviour
                 , player.transform.position.y, 0.0f);
             if (upperFloor.transform.position.y == 0f)
             {
-                timeLeft = GameMetrics.timeForFloor;
                 targetReached = true;
-                if(previousFloor != null) Destroy(previousFloor.gameObject);
+                if (previousFloor != null) Destroy(previousFloor.gameObject);
                 previousFloor = actualFloor;
                 actualFloor = upperFloor;
                 upperFloor = newFloor;
+                timeLeft = actualFloor.timeForFloor;
                 previousFloor.DeleteTraps();
             }
         }
@@ -54,19 +54,19 @@ public class LevelCreator : MonoBehaviour
             timeLeft -= Time.deltaTime;
             //Debug.Log(timeLeft);
 
-			// Initial implementation of drawing text on screen.
-			// !!! Don't forget to drag "ui_text_timeLeft" from Hierarchy to 
-			// TODO: 
-			// Size, color etc. to modify later
-			// "Game over" after collision with trap
+            // Initial implementation of drawing text on screen.
+            // !!! Don't forget to drag "ui_text_timeLeft" from Hierarchy to 
+            // TODO: 
+            // Size, color etc. to modify later
+            // "Game over" after collision with trap
 
-			int nTimeLeft = (int)timeLeft;
-			ui_text_timeLeft.text = "Time Left: " +  nTimeLeft.ToString ();
+            int nTimeLeft = (int)timeLeft;
+            ui_text_timeLeft.text = "Time Left: " + nTimeLeft.ToString();
 
-            if(timeLeft < 0)
+            if (timeLeft < 0)
             {
                 DropUpperFloor();
-				ui_text_timeLeft.text = "Game Over";
+                ui_text_timeLeft.text = "Game Over";
             }
         }
     }
@@ -77,6 +77,7 @@ public class LevelCreator : MonoBehaviour
         actualFloor.entranceTileNumber = -1;
         actualFloor.CreateTiles();
         exitTileNumber = actualFloor.GetExitTileNumber();
+        timeLeft = actualFloor.timeForFloor;
 
         upperFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], new Vector3(0f, GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
@@ -87,7 +88,7 @@ public class LevelCreator : MonoBehaviour
 
     void CreateNewFloor()
     {
-        newFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], new Vector3(0f, 2* GameMetrics.upperFloorY,0f), 
+        newFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
         newFloor.entranceTileNumber = exitTileNumber;
         newFloor.CreateTiles();

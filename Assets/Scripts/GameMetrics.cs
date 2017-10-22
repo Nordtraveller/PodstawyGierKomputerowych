@@ -15,7 +15,6 @@ public static class GameMetrics
     public static float upperFloorY = 10f;
     public static float dropSpeed = 5f;
     public static float dropDuration = 1f;
-    public static float timeForFloor = 30f;
 
     #endregion
 

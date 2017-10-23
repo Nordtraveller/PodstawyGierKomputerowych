@@ -39,7 +39,7 @@ public class PlayerControlls : MonoBehaviour
         {
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }
-        if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
+        if (Input.GetButton("Jump") && IsGrounded() && !bouncyFloor)
         {
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }

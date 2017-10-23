@@ -18,7 +18,7 @@ public class PlayerControlls : MonoBehaviour
         distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;
     }
 
-    void FixedUpdate ()
+    void Update ()
     {
 
         Vector3 position = transform.position;

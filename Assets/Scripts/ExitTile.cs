@@ -19,6 +19,7 @@ public class ExitTile : MonoBehaviour
     {
         if(other.tag == "Player" && player.haveKey == true )
         {
+            creator.playerTriggerDrop = true;
             creator.DropUpperFloor();
             playerControlls.fireFloor = false;
             playerControlls.bouncyFloor = false;

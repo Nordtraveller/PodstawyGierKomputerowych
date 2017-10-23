@@ -16,6 +16,7 @@ public class LevelCreator : MonoBehaviour
     private Floor actualFloor;
     private Floor previousFloor;
     private bool targetReached = true;
+    public bool playerTriggerDrop = false;
     private float startTime;
     private float timeLeft;
     private PlayerControlls player;
@@ -36,11 +37,15 @@ public class LevelCreator : MonoBehaviour
                 Vector3.zero, (Time.time - startTime) / GameMetrics.dropDuration);
             actualFloor.transform.position = Vector3.Lerp(Vector3.zero,
                 new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
-            player.transform.position = new Vector3(actualFloor.GetExitTileNumber() * GameMetrics.tileHorizontalSize
+            if(playerTriggerDrop)
+            {
+                player.transform.position = new Vector3(actualFloor.GetExitTileNumber() * GameMetrics.tileHorizontalSize
                 , player.transform.position.y, 0.0f);
+            }
             if (upperFloor.transform.position.y == 0f)
             {
                 targetReached = true;
+                playerTriggerDrop = false;
                 if (previousFloor != null) Destroy(previousFloor.gameObject);
                 previousFloor = actualFloor;
                 actualFloor = upperFloor;

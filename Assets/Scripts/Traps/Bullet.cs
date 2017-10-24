@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public Vector3 bulletStartingPosition;
 
-    public float bulletSpeed = 3f;
+    public float bulletSpeed = 3.5f;
 
     // Use this for initialization
     void Start()

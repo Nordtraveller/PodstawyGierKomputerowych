@@ -11,6 +11,7 @@ public class PlayerControlls : MonoBehaviour
 
     public bool fireFloor = false;
     public bool bouncyFloor = false;
+    private float jumpDelay = 0.05f;
 
     void Start ()
     {
@@ -34,9 +35,10 @@ public class PlayerControlls : MonoBehaviour
         }
         transform.position = position;
 
-
-        if (IsGrounded() && bouncyFloor)
+        jumpDelay -= Time.deltaTime;
+        if (IsGrounded() && bouncyFloor && jumpDelay < 0)
         {
+            jumpDelay = 0.05f;
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
         }
         if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)

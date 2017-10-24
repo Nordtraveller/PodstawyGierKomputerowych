@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour {
 
@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour {
         }
 
 		if (Input.GetKeyDown (KeyCode.F5)) {
-			EditorSceneManager.LoadScene (EditorSceneManager.GetActiveScene ().name);
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 		}
 	}
 }

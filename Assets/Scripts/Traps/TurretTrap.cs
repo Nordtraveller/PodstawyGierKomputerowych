@@ -36,7 +36,8 @@ public class TurretTrap : MonoBehaviour
 
     void FloorCheck()
     {
-        if (transform.position.y <= 1.25f)
+        Debug.Log(transform.parent.position.y);
+        if (transform.parent.position.y <= 3.0f)
         {
             currentFloor = true;
         }

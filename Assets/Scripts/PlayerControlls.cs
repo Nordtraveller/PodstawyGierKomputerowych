@@ -11,6 +11,7 @@ public class PlayerControlls : MonoBehaviour
 
     public bool fireFloor = false;
     public bool bouncyFloor = false;
+    public bool windyFloor = false;
     private float jumpDelay = 0.05f;
 
     void Start ()
@@ -21,13 +22,18 @@ public class PlayerControlls : MonoBehaviour
 
     void Update ()
     {
-
         Vector3 position = transform.position;
         if (fireFloor)
         {
-            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
             if (Input.GetAxis("Horizontal") > 0) direction = 0.8f;
+            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
+        }
+        else if (windyFloor)
+        {
+            direction = -0.3f;
+            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed  
+                           + Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
         }
         else
         {

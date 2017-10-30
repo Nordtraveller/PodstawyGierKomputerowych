@@ -22,6 +22,7 @@ public class ExitTile : MonoBehaviour
             creator.playerTriggerDrop = true;
             creator.DropUpperFloor();
             playerControlls.fireFloor = false;
+            playerControlls.windyFloor = false;
             playerControlls.bouncyFloor = false;
             Destroy(this);
         }

@@ -15,9 +15,10 @@ public class CameraController : MonoBehaviour {
             newPosition.x = player.transform.position.x;
             transform.position = newPosition;
         }
-
-		if (Input.GetKeyDown (KeyCode.F5)) {
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-		}
 	}
+
+    public void restartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

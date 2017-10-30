@@ -20,15 +20,23 @@ public class LevelCreator : MonoBehaviour
     private float startTime;
     private float timeLeft;
     private PlayerControlls player;
+    private CameraController cameraController;
 
     private void Awake()
     {
         CreateFirstFloor();
         player = GameObject.Find("Player").GetComponent<PlayerControlls>();
+        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
     }
 
     private void Update()
     {
+        if(player == null)
+        {
+                            DropUpperFloor();
+                ui_text_timeLeft.text = "Game Over";
+                cameraController.restartGame();
+        }
         if (!targetReached)
         {
             newFloor.transform.position = Vector3.Lerp(new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
@@ -72,6 +80,7 @@ public class LevelCreator : MonoBehaviour
             {
                 DropUpperFloor();
                 ui_text_timeLeft.text = "Game Over";
+                cameraController.restartGame();
             }
         }
     }

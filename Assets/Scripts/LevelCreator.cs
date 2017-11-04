@@ -22,18 +22,27 @@ public class LevelCreator : MonoBehaviour
     private PlayerControlls player;
     private CameraController cameraController;
 
+	private float timeDeltaOneSecondInterval = 0.0f;
+
+	public AudioClip clockTickAudioClip;
+	private AudioSource audioSrc;
+
+
+
     private void Awake()
     {
         CreateFirstFloor();
         player = GameObject.Find("Player").GetComponent<PlayerControlls>();
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+
+		audioSrc = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
         if(player == null)
         {
-                            DropUpperFloor();
+                DropUpperFloor();
                 ui_text_timeLeft.text = "Game Over";
                 cameraController.restartGame();
         }
@@ -64,17 +73,27 @@ public class LevelCreator : MonoBehaviour
         }
         else
         {
-            timeLeft -= Time.deltaTime;
-            //Debug.Log(timeLeft);
+            timeLeft -= Time.deltaTime;   
+			int nTimeLeft = (int)timeLeft;
 
-            // Initial implementation of drawing text on screen.
-            // !!! Don't forget to drag "ui_text_timeLeft" from Hierarchy to 
-            // TODO: 
-            // Size, color etc. to modify later
-            // "Game over" after collision with trap
+			timeDeltaOneSecondInterval += Time.deltaTime;
 
-            int nTimeLeft = (int)timeLeft;
-            ui_text_timeLeft.text = "Time Left: " + nTimeLeft.ToString();
+			if (timeDeltaOneSecondInterval >= 1.0f) 
+			{	
+				if (nTimeLeft < 10)
+				{
+					audioSrc.PlayOneShot (clockTickAudioClip, 1.0f);
+				}
+				if (nTimeLeft <= 5)
+				{
+					audioSrc.PlayDelayed (0.5f);
+				}
+
+				timeDeltaOneSecondInterval = 0.0f;
+			}	
+
+			
+			ui_text_timeLeft.text = "Time Left: " + nTimeLeft.ToString();
 
             if (timeLeft < 0)
             {

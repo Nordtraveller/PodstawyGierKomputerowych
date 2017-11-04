@@ -73,7 +73,7 @@ ModelImporter:
       name: Idle
       takeName: Default Take
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 120
       wrapMode: 2
       orientationOffsetY: 0
       level: 0
@@ -110,8 +110,8 @@ ModelImporter:
     - serializedVersion: 16
       name: Shoot
       takeName: Default Take
-      firstFrame: 31
-      lastFrame: 60
+      firstFrame: 60
+      lastFrame: 199
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

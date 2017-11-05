@@ -63,7 +63,7 @@ public class TurretTrap : MonoBehaviour
     void shoot()
     {
         Vector3 bulletStartingPosition =
-            new Vector3(transform.position.x - 0.7f, transform.position.y + 1.0f, transform.position.z);
+            new Vector3(transform.position.x - 0.7f, transform.position.y + 0.9f, transform.position.z);
         GameObject bulletInstance;
         bulletInstance = Instantiate(bullet, bulletStartingPosition, transform.rotation) as GameObject;
         reloadingAmmo = true;

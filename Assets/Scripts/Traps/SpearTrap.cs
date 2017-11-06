@@ -6,46 +6,58 @@ public class SpearTrap : MonoBehaviour {
 
     private float startingY;
     private float attackToY;
-    private float attackSpeed = 1f;
+    private float attackSpeed = 4f;
 
     private float attackRechargeTimmer;
-    private float attackRechargeInterval = 1.5f;
+    private float attackRechargeInterval = 2.0f;
 
-    private bool kek = false;
+    private bool recharge = false;
 
     // Use this for initialization
     void Start () {
         startingY = transform.position.y;
-        attackToY = transform.position.y + 0.9f;
+        attackToY = transform.position.y + 1.1f;
     }
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
-        /*   if (attackRechargeTimmer < attackRechargeInterval)
-           {
-               attackRechargeTimmer += Time.deltaTime;
-           }
-           else
-           {
-               attack();
-               if (transform.position.y < startingY + 0.05f)
-               {
-                   this.transform.position.Set(this.transform.position.x, this.transform.position.y + 0.06f, this.transform.position.z);
-                   attackRechargeTimmer = 0;
+	    attackRechargeTimmer += Time.deltaTime;
 
-               }
-           }*/
-           attack();
+	    if (!recharge && attackRechargeTimmer >= attackRechargeInterval)
+	    {
+	        Attack();
+	    }
+	    if (recharge)
+	    {
+	        PullBack();
+	    }
 
     }
 
 
-    void attack()
+    void Attack()
     {
-        Vector3 start = new Vector3(this.transform.position.x, startingY, this.transform.position.z);
-        Vector3 end = new Vector3(this.transform.position.x, attackToY, this.transform.position.z);
-        float interpolant = Mathf.PingPong(Time.time * attackSpeed, 1f);
-        this.transform.position = Vector3.Lerp(start, end, interpolant);
+        transform.position = new Vector3(transform.position.x, transform.position.y + attackSpeed * Time.deltaTime,
+            transform.position.z);
+        if (transform.position.y > attackToY)
+        {
+            transform.position = new Vector3(transform.position.x, attackToY, transform.position.z);
+            recharge = true;
+        }
+    }
+
+
+    void PullBack()
+    {
+        transform.position = new Vector3(transform.position.x, transform.position.y - attackSpeed * Time.deltaTime,
+            transform.position.z);
+        if (transform.position.y < startingY)
+        {
+            transform.position = new Vector3(transform.position.x, startingY, transform.position.z);
+            recharge = false;
+            attackRechargeTimmer = 0;
+        }
     }
 }

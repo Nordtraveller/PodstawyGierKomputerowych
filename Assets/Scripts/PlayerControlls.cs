@@ -9,6 +9,7 @@ public class PlayerControlls : MonoBehaviour
     private RaycastHit hit;
     private float direction = 0;
 
+
     public bool fireFloor = false;
     public bool bouncyFloor = false;
     public bool windyFloor = false;

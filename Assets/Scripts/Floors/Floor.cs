@@ -12,8 +12,8 @@ public class Floor : MonoBehaviour
     public GameObject keyPrefab;
     public Trap[] trapsPrefabs;
 
-    private int exitTileNumber;
-    private int keyTileNumber;
+    public int exitTileNumber;
+    public int keyTileNumber;
     private List<Trap> trapList;
     private List<int> tilesList;
 

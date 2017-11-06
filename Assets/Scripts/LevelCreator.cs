@@ -13,7 +13,7 @@ public class LevelCreator : MonoBehaviour
     private int exitTileNumber;
     private Floor newFloor;
     private Floor upperFloor;
-    private Floor actualFloor;
+    public Floor actualFloor;
     private Floor previousFloor;
     private bool targetReached = true;
     public bool playerTriggerDrop = false;

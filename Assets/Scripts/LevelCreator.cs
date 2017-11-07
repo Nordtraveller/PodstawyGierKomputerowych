@@ -156,6 +156,24 @@ public class LevelCreator : MonoBehaviour
     public void DropUpperFloor()
     {
         CreateNewFloor();
+
+		int size = upperFloor.GetTilesObjectList ().Count;
+		for (int i = 0; i < size; i++) {
+			GameObject tile = upperFloor.GetTilesObjectList () [i];
+
+			//float param = (timeToTen / 100.0f);
+			//float offsetY = param * Mathf.Sin (timeToTen * 10.14f);
+
+			Vector3 oldPos = new Vector3 (tile.transform.localPosition.x, tile.transform.localPosition.y, tile.transform.localPosition.z);
+		
+			//oldPos.x += param;
+			oldPos.y = 0;
+
+			tile.transform.localPosition = oldPos;
+
+		}
+
+
         startTime = Time.time;
         targetReached = false;
     }

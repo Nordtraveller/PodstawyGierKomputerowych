@@ -23,6 +23,7 @@ public class LevelCreator : MonoBehaviour
     private CameraController cameraController;
 
 	private float timeDeltaOneSecondInterval = 0.0f;
+	private float timeToTen = 0.0f;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
@@ -70,6 +71,8 @@ public class LevelCreator : MonoBehaviour
                 timeLeft = actualFloor.timeForFloor;
                 previousFloor.DeleteTraps();
             }
+
+			timeToTen = 0.0f;
         }
         else
         {
@@ -90,7 +93,29 @@ public class LevelCreator : MonoBehaviour
 				}
 
 				timeDeltaOneSecondInterval = 0.0f;
-			}	
+			}
+
+			if (nTimeLeft < 10)
+			{
+				timeToTen += Time.deltaTime;
+
+
+				int size = upperFloor.GetTilesObjectList ().Count;
+				for (int i = 0; i < size; i++) {
+					GameObject tile = upperFloor.GetTilesObjectList () [i];
+
+					float param = (timeToTen / 100.0f);
+					float offsetY = param * Mathf.Sin (timeToTen * 10.14f);
+
+					Vector3 oldPos = new Vector3 (tile.transform.position.x, tile.transform.position.y, tile.transform.position.z);
+
+					//oldPos.x += param;
+					oldPos.y += offsetY;
+
+					tile.transform.position = oldPos;
+
+				}
+			}
 
 			
 			ui_text_timeLeft.text = "Time Left: " + nTimeLeft.ToString();

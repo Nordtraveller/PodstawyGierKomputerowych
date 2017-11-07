@@ -8,6 +8,11 @@ public class Floor : MonoBehaviour
     public int entranceTileNumber; //numer tile który ma być pusty żeby dało się wejść na piętro
     public float timeForFloor;
 
+	public List<GameObject> GetTilesObjectList()
+	{
+		return tilesObjectsList;
+	}
+
     public GameObject tilePrefab;
     public GameObject keyPrefab;
     public Trap[] trapsPrefabs;
@@ -17,11 +22,14 @@ public class Floor : MonoBehaviour
     private List<Trap> trapList;
     private List<int> tilesList;
 
+	private List<GameObject> tilesObjectsList;
+
     void Awake()
     {
         floorSize = GameMetrics.floorSize;
         trapList = new List<Trap>();
         tilesList = new List<int>();
+		tilesObjectsList = new List<GameObject> ();
     }
 
     public void CreateTiles()
@@ -30,9 +38,12 @@ public class Floor : MonoBehaviour
         {
             if (i != entranceTileNumber)
             {
-                Instantiate(tilePrefab,
+                GameObject go = Instantiate(tilePrefab,
                     new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f),
                     this.transform.rotation, this.transform);
+
+				tilesObjectsList.Add (go);
+
                 tilesList.Add(i);
             }
             else

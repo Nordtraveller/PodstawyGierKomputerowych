@@ -28,6 +28,8 @@ public class LevelCreator : MonoBehaviour
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
 
+	private GameObject m_gameObjectPlane;
+	private GameObject m_gameObjectPlane2;
 
 
     private void Awake()
@@ -37,6 +39,9 @@ public class LevelCreator : MonoBehaviour
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
 
 		audioSrc = GetComponent<AudioSource>();
+
+		m_gameObjectPlane = GameObject.Find ("backgroundTexture");
+		m_gameObjectPlane2 = GameObject.Find ("backgroundTexture2");
     }
 
     private void Update()
@@ -55,6 +60,18 @@ public class LevelCreator : MonoBehaviour
                 Vector3.zero, (Time.time - startTime) / GameMetrics.dropDuration);
             actualFloor.transform.position = Vector3.Lerp(Vector3.zero,
                 new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
+
+			// Background
+			Color tmp = m_gameObjectPlane.GetComponent<MeshRenderer> ().material.color;
+			tmp.a = (Time.time - startTime) / GameMetrics.dropDuration;
+			tmp.a = 1 - tmp.a;
+			m_gameObjectPlane.GetComponent<MeshRenderer> ().material.color = tmp;
+
+			Color tmp2 = m_gameObjectPlane2.GetComponent<MeshRenderer> ().material.color;
+			tmp2.a = (Time.time - startTime) / GameMetrics.dropDuration;
+
+			m_gameObjectPlane2.GetComponent<MeshRenderer> ().material.color = tmp2;
+
             if(playerTriggerDrop)
             {
                 player.transform.position = new Vector3(actualFloor.GetExitTileNumber() * GameMetrics.tileHorizontalSize

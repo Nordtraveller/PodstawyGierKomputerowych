@@ -14,11 +14,15 @@ public class Floor : MonoBehaviour
 	}
 
     public GameObject tilePrefab;
-    public GameObject keyPrefab;
+    public Key keyPrefab;
+    public ExtraKey extraKeyPrefab;
+    public ExtraTeleport extraTeleportPrefab;
     public Trap[] trapsPrefabs;
+
 
     public int exitTileNumber;
     public int keyTileNumber;
+    public int powerUpTileNumber;
     private List<Trap> trapList;
     private List<int> tilesList;
 
@@ -55,6 +59,10 @@ public class Floor : MonoBehaviour
         }
         CreateExitTile();
         CreateKey();
+        if (Random.Range(0, 100) > 90)
+        {
+            CreatePowerUp();
+        }
         CreateTraps();
         CountTimeForFloor();
     }
@@ -100,7 +108,7 @@ public class Floor : MonoBehaviour
                 tryCounter++;
             }
             while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber
-            || CheckTrapPosition(trapTileNumber, prefab.size) || tryCounter < 10);
+            || trapTileNumber == powerUpTileNumber || CheckTrapPosition(trapTileNumber, prefab.size) || tryCounter < 10);
             Trap trap = Instantiate(prefab,
                 new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
                 prefab.transform.rotation, this.transform);
@@ -112,6 +120,29 @@ public class Floor : MonoBehaviour
             trapList.Add(trap);
             i += trap.size;
         }
+    }
+
+    private void CreatePowerUp()
+    {
+        do
+        {
+            powerUpTileNumber = Random.Range(0, tilesList.Count);
+        }
+        while (powerUpTileNumber == entranceTileNumber || powerUpTileNumber == exitTileNumber || powerUpTileNumber == keyTileNumber);
+        tilesList.RemoveAt(powerUpTileNumber);
+        if (Random.Range(0, 3) == 1)
+        {
+            Instantiate(extraKeyPrefab,
+            new Vector3(powerUpTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
+            this.transform.rotation, this.transform);
+        }
+        else
+        {
+            Instantiate(extraTeleportPrefab,
+           new Vector3(powerUpTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
+           this.transform.rotation, this.transform);
+        }
+            
     }
 
     private bool CheckTrapPosition(int tileNumber, int trapSize)
@@ -129,14 +160,6 @@ public class Floor : MonoBehaviour
         return false;
     }
 
-    public void DeleteTraps()
-    {
-        for (int i = 0; i < trapList.Count; i++)
-        {
-            Destroy(trapList[i].gameObject);
-        }
-    }
-
     public int GetExitTileNumber()
     {
         return exitTileNumber;
@@ -148,5 +171,21 @@ public class Floor : MonoBehaviour
         int distanceFromEntranceToKey = Mathf.Abs(Mathf.Abs(entranceTileNumber) - keyTileNumber);
         int distanceFromKeyToExit = Mathf.Abs(keyTileNumber - exitTileNumber);
         timeForFloor = (distanceFromEntranceToKey + distanceFromKeyToExit) * multiplier;
+    }
+
+    private void DestroyTraps()
+    {
+        for (int i = 0; i < trapList.Count; i++)
+        {
+            Destroy(trapList[i].gameObject);
+        }
+    }
+
+    public void DestroyItemsOnFloor()
+    {
+        DestroyTraps();
+        Destroy(keyPrefab.gameObject);
+        Destroy(extraKeyPrefab.gameObject);
+        Destroy(extraTeleportPrefab.gameObject);
     }
 }

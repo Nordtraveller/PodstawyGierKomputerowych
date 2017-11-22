@@ -86,7 +86,7 @@ public class LevelCreator : MonoBehaviour
                 actualFloor = upperFloor;
                 upperFloor = newFloor;
                 timeLeft = actualFloor.timeForFloor;
-                previousFloor.DeleteTraps();
+                previousFloor.DestroyItemsOnFloor();
             }
 
 			timeToTen = 0.0f;

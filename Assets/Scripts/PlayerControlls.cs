@@ -8,7 +8,8 @@ public class PlayerControlls : MonoBehaviour
     private float distanceToGround;
     private RaycastHit hit;
     private float direction = 0;
-
+    private PlayerStatus playerStatus;
+    private LevelCreator level;
 
     public bool fireFloor = false;
     public bool bouncyFloor = false;
@@ -17,6 +18,8 @@ public class PlayerControlls : MonoBehaviour
 
     void Start ()
     {
+        level = GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>();
+        playerStatus = GameObject.Find("Player").GetComponent<PlayerStatus>();
         body = GetComponentInChildren<Rigidbody>();
         distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;
     }
@@ -51,6 +54,20 @@ public class PlayerControlls : MonoBehaviour
         if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
         {
             body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+        }
+
+        //special keys
+        if (Input.GetKeyDown(KeyCode.Q) && playerStatus.hasExtraKey)
+        {
+            playerStatus.haveKey = true;
+            playerStatus.hasExtraKey = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) && playerStatus.hasExtraTeleport)
+        {
+            // do poprawy teleport bo nie dziaua... : P
+            position.x = (level.actualFloor.exitTileNumber * 2);
+            playerStatus.hasExtraTeleport = false;
         }
     }
 

@@ -102,7 +102,7 @@ public class Floor : MonoBehaviour
 
     private void CreateKeyIndicator()
     {
-        KeyIndicator indicator = Instantiate(KeyHud[1],
+        KeyIndicator indicator = Instantiate(KeyHud[0],
             new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize + 1.0f, 0f),
             this.transform.rotation, this.transform);
     }

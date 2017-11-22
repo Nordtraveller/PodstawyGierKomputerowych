@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ExtraKey : MonoBehaviour
+public class PowerUp : MonoBehaviour
 {
     private void OnTriggerEnter(Collider collider)
     {

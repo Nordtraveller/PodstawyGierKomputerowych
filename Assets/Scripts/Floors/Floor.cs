@@ -14,9 +14,8 @@ public class Floor : MonoBehaviour
 	}
 
     public GameObject tilePrefab;
-    public Key keyPrefab;
-    public ExtraKey extraKeyPrefab;
-    public ExtraTeleport extraTeleportPrefab;
+    public Key [] keyPrefab;
+    public PowerUp [] powerUpsPrefabs;
     public Trap[] trapsPrefabs;
 
 
@@ -24,6 +23,8 @@ public class Floor : MonoBehaviour
     public int keyTileNumber;
     public int powerUpTileNumber;
     private List<Trap> trapList;
+    private List<PowerUp> powerUpList;
+    private List<Key> keyList;
     private List<int> tilesList;
 
 	private List<GameObject> tilesObjectsList;
@@ -32,6 +33,8 @@ public class Floor : MonoBehaviour
     {
         floorSize = GameMetrics.floorSize;
         trapList = new List<Trap>();
+        powerUpList = new List<PowerUp>();
+        keyList = new List<Key>();
         tilesList = new List<int>();
 		tilesObjectsList = new List<GameObject> ();
     }
@@ -88,9 +91,10 @@ public class Floor : MonoBehaviour
         }
         while (keyTileNumber == entranceTileNumber || keyTileNumber == exitTileNumber);
         tilesList.RemoveAt(keyTileNumber);
-        Instantiate(keyPrefab,
+        Key key = Instantiate(keyPrefab[0],
             new Vector3(keyTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
+        keyList.Add(key);
     }
 
     private void CreateTraps()
@@ -130,19 +134,11 @@ public class Floor : MonoBehaviour
         }
         while (powerUpTileNumber == entranceTileNumber || powerUpTileNumber == exitTileNumber || powerUpTileNumber == keyTileNumber);
         tilesList.RemoveAt(powerUpTileNumber);
-        if (Random.Range(0, 3) == 1)
-        {
-            Instantiate(extraKeyPrefab,
+        PowerUp powerUp = Instantiate(powerUpsPrefabs[Random.Range(0, powerUpsPrefabs.Length)],
             new Vector3(powerUpTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
-        }
-        else
-        {
-            Instantiate(extraTeleportPrefab,
-           new Vector3(powerUpTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
-           this.transform.rotation, this.transform);
-        }
-            
+        powerUpList.Add(powerUp);
+
     }
 
     private bool CheckTrapPosition(int tileNumber, int trapSize)
@@ -181,11 +177,14 @@ public class Floor : MonoBehaviour
         }
     }
 
+
     public void DestroyItemsOnFloor()
     {
         DestroyTraps();
-        Destroy(keyPrefab.gameObject);
-        Destroy(extraKeyPrefab.gameObject);
-        Destroy(extraTeleportPrefab.gameObject);
+        Destroy(keyList[0].gameObject);
+        if(powerUpList.Count != 0)
+        {
+            Destroy(powerUpList[0].gameObject);
+        }
     }
 }

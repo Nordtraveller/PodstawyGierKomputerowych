@@ -173,8 +173,7 @@ public class LevelCreator : MonoBehaviour
     public void DropUpperFloor()
     {
         CreateNewFloor();
-
-		int size = upperFloor.GetTilesObjectList ().Count;
+        int size = upperFloor.GetTilesObjectList ().Count;
 		for (int i = 0; i < size; i++) {
 			GameObject tile = upperFloor.GetTilesObjectList () [i];
 

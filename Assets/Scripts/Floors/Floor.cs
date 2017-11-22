@@ -43,7 +43,6 @@ public class Floor : MonoBehaviour
 
     public void CreateTiles()
     {
-        Debug.Log("CreateTiles");
         for (int i = 0; i < floorSize; i++)
         {
             if (i != entranceTileNumber)
@@ -66,7 +65,7 @@ public class Floor : MonoBehaviour
         CreateExitTile();
         CreateKeyIndicator();
         CreateKey();
-        if (Random.Range(0, 100) > 20)
+        if (Random.Range(0, 100) > 90)
         {
             CreatePowerUp();
         }

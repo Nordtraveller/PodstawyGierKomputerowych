@@ -65,8 +65,8 @@ public class PlayerControlls : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W) && playerStatus.hasExtraTeleport)
         {
-            // do poprawy teleport bo nie dziaua... : P
-            position.x = (level.actualFloor.exitTileNumber * 2);
+            
+            transform.position = new Vector3(level.actualFloor.exitTileNumber * 2, position.y, position.z); 
             playerStatus.hasExtraTeleport = false;
         }
     }

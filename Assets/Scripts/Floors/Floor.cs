@@ -41,6 +41,7 @@ public class Floor : MonoBehaviour
 
     public void CreateTiles()
     {
+        Debug.Log("CreateTiles");
         for (int i = 0; i < floorSize; i++)
         {
             if (i != entranceTileNumber)
@@ -62,7 +63,7 @@ public class Floor : MonoBehaviour
         }
         CreateExitTile();
         CreateKey();
-        if (Random.Range(0, 100) > 90)
+        if (Random.Range(0, 100) > 20)
         {
             CreatePowerUp();
         }
@@ -177,14 +178,26 @@ public class Floor : MonoBehaviour
         }
     }
 
+    private void DestroyPowerUps()
+    {
+        for (int i = 0; i < powerUpList.Count; i++)
+        {
+            Destroy(powerUpList[i].gameObject);
+        }
+    }
+
+    private void DestroyKey()
+    {
+        for (int i = 0; i < keyList.Count; i++)
+        {
+            Destroy(keyList[i].gameObject);
+        }
+    }
 
     public void DestroyItemsOnFloor()
     {
         DestroyTraps();
-        Destroy(keyList[0].gameObject);
-        if(powerUpList.Count != 0)
-        {
-            Destroy(powerUpList[0].gameObject);
-        }
+        DestroyPowerUps();
+        DestroyKey();
     }
 }

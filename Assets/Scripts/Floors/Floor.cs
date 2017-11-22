@@ -15,6 +15,7 @@ public class Floor : MonoBehaviour
 
     public GameObject tilePrefab;
     public Key [] keyPrefab;
+    public KeyIndicator[] KeyHud;
     public PowerUp [] powerUpsPrefabs;
     public Trap[] trapsPrefabs;
 
@@ -25,6 +26,7 @@ public class Floor : MonoBehaviour
     private List<Trap> trapList;
     private List<PowerUp> powerUpList;
     private List<Key> keyList;
+    private List<KeyIndicator> keyIndicatorList;
     private List<int> tilesList;
 
 	private List<GameObject> tilesObjectsList;
@@ -62,6 +64,7 @@ public class Floor : MonoBehaviour
             }
         }
         CreateExitTile();
+        CreateKeyIndicator();
         CreateKey();
         if (Random.Range(0, 100) > 20)
         {
@@ -96,6 +99,14 @@ public class Floor : MonoBehaviour
             new Vector3(keyTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
         keyList.Add(key);
+    }
+
+    private void CreateKeyIndicator()
+    {
+        KeyIndicator indicator = Instantiate(KeyHud[1],
+            new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize + 1.0f, 0f),
+            this.transform.rotation, this.transform);
+        keyIndicatorList.Add(indicator);
     }
 
     private void CreateTraps()

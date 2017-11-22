@@ -22,11 +22,11 @@ public class HiddenTrap : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		this.transform.Rotate(new Vector3(0.0f, 60.0f * Time.deltaTime, 0.0f));
+        //this.transform.Rotate(new Vector3(0.0f, 60.0f * Time.deltaTime, 0.0f));
+        this.transform.Rotate(new Vector3(0.0f, 0.0f, 60.0f * Time.deltaTime));
 
 
-
-		m_timePassed += Time.deltaTime;
+        m_timePassed += Time.deltaTime;
 
 		float t = (3.0f - m_timePassed) / 3.0f;
 		t = Mathf.Clamp (t, 0.0f, 1.0f);

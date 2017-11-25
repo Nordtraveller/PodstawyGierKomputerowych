@@ -16,6 +16,8 @@ public class TurretTrap : MonoBehaviour
 
     public GameObject bullet; //pocisk
 
+    private GameObject bulletInstance;
+
 
     // Use this for initialization
     void Start()
@@ -64,9 +66,16 @@ public class TurretTrap : MonoBehaviour
     {
         Vector3 bulletStartingPosition =
             new Vector3(transform.position.x - 0.7f, transform.position.y + 0.9f, transform.position.z);
-        GameObject bulletInstance;
         bulletInstance = Instantiate(bullet, bulletStartingPosition, transform.rotation) as GameObject;
         reloadingAmmo = true;
         reloadingTimmer = 0;
+    }
+
+    private void OnDestroy()
+    {
+        if(bulletInstance != null)
+        {
+            Destroy(bulletInstance);
+        }
     }
 }

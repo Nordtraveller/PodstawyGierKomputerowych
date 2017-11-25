@@ -32,19 +32,42 @@ public class KeyIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    //emptyCreateTimmer += Time.deltaTime;
 
+        DeleteKeyIndicatorFromPreviousFloor();
+        UpdateKeyStatus();
+
+    }
+
+    private void DeleteKeyIndicatorFromPreviousFloor()
+    {
+        if(keyEmptyInstance != null)
+        {
+            if(keyEmptyInstance.transform.position.y <= 2.9)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        if(keyFullInstance != null)
+        {
+            if(keyFullInstance.transform.position.y <= 2.9)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    private void UpdateKeyStatus()
+    {
         if (PlayerStatus.haveKey && keyFullInstance == null)
-	    {
+        {
             Destroy(keyEmptyInstance);
-	        keyFullInstance = Instantiate(Full, transform.position, transform.rotation) as GameObject;
-	        //emptyCreateTimmer = 0.0f;
-	    }
-	    else if(!PlayerStatus.haveKey && keyFullInstance != null)
-	    {
+            keyFullInstance = Instantiate(Full, transform.position, transform.rotation) as GameObject;
+        }
+        else if (!PlayerStatus.haveKey && keyFullInstance != null)
+        {
             Destroy(keyFullInstance);
-	        //emptyCreateTimmer = 0.0f;
-            
+
         }
         else if (level.getUpperFloor().transform.position.y <= 0.5 && keyEmptyInstance == null)
         {

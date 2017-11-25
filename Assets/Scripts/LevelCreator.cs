@@ -193,4 +193,10 @@ public class LevelCreator : MonoBehaviour
         startTime = Time.time;
         targetReached = false;
     }
+
+
+    public Floor getUpperFloor()
+    {
+        return upperFloor;
+    }
 }

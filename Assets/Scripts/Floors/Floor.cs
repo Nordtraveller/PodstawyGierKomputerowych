@@ -15,7 +15,7 @@ public class Floor : MonoBehaviour
 
     public GameObject tilePrefab;
     public Key [] keyPrefab;
-    public KeyIndicator[] KeyHud;
+    public KeyIndicator[] KeyIndicatorPrefab;
     public PowerUp [] powerUpsPrefabs;
     public Trap[] trapsPrefabs;
 
@@ -37,6 +37,7 @@ public class Floor : MonoBehaviour
         trapList = new List<Trap>();
         powerUpList = new List<PowerUp>();
         keyList = new List<Key>();
+        keyIndicatorList = new List<KeyIndicator>();
         tilesList = new List<int>();
 		tilesObjectsList = new List<GameObject> ();
     }
@@ -102,9 +103,10 @@ public class Floor : MonoBehaviour
 
     private void CreateKeyIndicator()
     {
-        KeyIndicator indicator = Instantiate(KeyHud[0],
+        KeyIndicator indicator = Instantiate(KeyIndicatorPrefab[0],
             new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize + 1.0f, 0f),
             this.transform.rotation, this.transform);
+        keyIndicatorList.Add(indicator);
     }
 
     private void CreateTraps()
@@ -203,10 +205,19 @@ public class Floor : MonoBehaviour
         }
     }
 
+    private void DestroyKeyIndicator()
+    {
+        for (int i = 0; i < keyIndicatorList.Count; i++)
+        {
+            Destroy(keyIndicatorList[i].gameObject);
+        }
+    }
+
     public void DestroyItemsOnFloor()
     {
         DestroyTraps();
         DestroyPowerUps();
         DestroyKey();
+        DestroyKeyIndicator();
     }
 }

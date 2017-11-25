@@ -16,18 +16,15 @@ public class KeyIndicator : MonoBehaviour {
 
     private LevelCreator level;
 
-    private float emptyCreateTimmer;
-
-    private float emptyCreateInterval = 3.0f;
-
-    
 
     // Use this for initialization
     void Start () {
+        this.transform.Rotate(new Vector3(180.0f, 0.0f, 0.0f));
+
         PlayerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
         level = GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>();
 
-        keyEmptyInstance = Instantiate(Empty, transform.position, transform.rotation) as GameObject;
+        keyEmptyInstance = Instantiate(Empty, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation) as GameObject;
     }
 	
 	// Update is called once per frame
@@ -62,7 +59,7 @@ public class KeyIndicator : MonoBehaviour {
         if (PlayerStatus.haveKey && keyFullInstance == null)
         {
             Destroy(keyEmptyInstance);
-            keyFullInstance = Instantiate(Full, transform.position, transform.rotation) as GameObject;
+            keyFullInstance = Instantiate(Full, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation) as GameObject;
         }
         else if (!PlayerStatus.haveKey && keyFullInstance != null)
         {
@@ -71,7 +68,7 @@ public class KeyIndicator : MonoBehaviour {
         }
         else if (level.getUpperFloor().transform.position.y <= 0.5 && keyEmptyInstance == null)
         {
-            keyEmptyInstance = Instantiate(Empty, transform.position, transform.rotation) as GameObject;
+            keyEmptyInstance = Instantiate(Empty, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation) as GameObject;
         }
     }
 
@@ -87,10 +84,4 @@ public class KeyIndicator : MonoBehaviour {
             Destroy(keyEmptyInstance);
         }
     }
-
-
-    /*    private void OnTriggerEnter(Collider collider)
-        {
-            Destroy(gameObject);
-        }*/
 }

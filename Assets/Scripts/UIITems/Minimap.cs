@@ -72,6 +72,7 @@ public class Minimap : MonoBehaviour {
 			m_spriteExitLocked.SetActive (false);
 			m_spriteExitUnlocked.SetActive (true);
 
+			// show unlocked
 			Vector2 vExit = m_spriteExitUnlocked.GetComponent<RectTransform>().anchoredPosition;
 
 			fNewX = fExitPositionX * fMinimapRectWidth;

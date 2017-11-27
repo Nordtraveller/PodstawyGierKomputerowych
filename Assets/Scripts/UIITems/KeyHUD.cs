@@ -20,29 +20,29 @@ public class KeyHUD : MonoBehaviour
 
     private float AlphaOfCollected = 1.0f;
 
-    private float AlphaOfNotCollected = 0.1f;
+    private float AlphaOfNotCollected = 0.4f;
 
     // Use this for initialization
     void Start ()
 	{
 	    PlayerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
-
-        TeleportUI.sprite = Sprites[2];
-        GoldenKeyUI.sprite = Sprites[3];
-        TrapDestroyerUI.sprite = Sprites[4];
-    }
+	    KeyUI.enabled = false;
+	    //TeleportUI.sprite = Sprites[2];
+	    //GoldenKeyUI.sprite = Sprites[3];
+	    //TrapDestroyerUI.sprite = Sprites[4];
+	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	    if (PlayerStatus.haveKey)
+/*	    if (PlayerStatus.haveKey)
 	    {
 	        KeyUI.sprite = Sprites[1];
 	    }
 	    else
 	    {
 	        KeyUI.sprite = Sprites[0];
-        }
+        }*/
 
 	    if (PlayerStatus.hasExtraKey)
 	    {
@@ -66,8 +66,8 @@ public class KeyHUD : MonoBehaviour
 
     private void alphaSwapper(Image image, float alphaValue)
     {
-        Color tmp = image.GetComponent<SpriteRenderer>().color;
+        Color tmp = image.GetComponent<Image>().color;
         tmp.a = alphaValue;
-        image.GetComponent<SpriteRenderer>().color = tmp;
+        image.GetComponent<Image>().color = tmp;
     }
 }

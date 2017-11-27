@@ -9,6 +9,7 @@ public class LevelCreator : MonoBehaviour
     public ExitTile exitPrefab;
     public FloorEntranceTile entrancePrefab;
     public Text ui_text_timeLeft;
+    public Slider ui_slider_timeLeft;
 
     private int exitTileNumber;
     private Floor newFloor;
@@ -86,6 +87,7 @@ public class LevelCreator : MonoBehaviour
                 actualFloor = upperFloor;
                 upperFloor = newFloor;
                 timeLeft = actualFloor.timeForFloor;
+                ui_slider_timeLeft.maxValue = actualFloor.timeForFloor;
                 previousFloor.DestroyItemsOnFloor();
             }
 
@@ -93,8 +95,9 @@ public class LevelCreator : MonoBehaviour
         }
         else
         {
-            timeLeft -= Time.deltaTime;   
-			int nTimeLeft = (int)timeLeft;
+            timeLeft -= Time.deltaTime;
+
+            int nTimeLeft = (int)timeLeft;
 
 			timeDeltaOneSecondInterval += Time.deltaTime;
 
@@ -136,6 +139,7 @@ public class LevelCreator : MonoBehaviour
 
 			
 			ui_text_timeLeft.text = "Time Left: " + nTimeLeft.ToString();
+            ui_slider_timeLeft.value = timeLeft;
 
             if (timeLeft < 0)
             {
@@ -153,6 +157,7 @@ public class LevelCreator : MonoBehaviour
         actualFloor.CreateTiles();
         exitTileNumber = actualFloor.GetExitTileNumber();
         timeLeft = actualFloor.timeForFloor;
+        ui_slider_timeLeft.maxValue = actualFloor.timeForFloor;
 
         upperFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], new Vector3(0f, GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);

@@ -61,6 +61,16 @@ public class KeyHUD : MonoBehaviour
 	    {
 	        alphaSwapper(TeleportUI, AlphaOfNotCollected);
         }
+
+		if (PlayerStatus.hasTrapDestroyer)
+		{
+			alphaSwapper (TrapDestroyerUI, AlphaOfCollected);
+		} 
+		else
+		{
+			alphaSwapper (TrapDestroyerUI, AlphaOfNotCollected);
+		}
+
     }
 
 

@@ -64,11 +64,16 @@ public class PlayerControlls : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.W) && playerStatus.hasExtraTeleport)
-        {
-            
+        {            
             transform.position = new Vector3(level.actualFloor.exitTileNumber * 2, position.y, position.z); 
             playerStatus.hasExtraTeleport = false;
         }
+
+		if (Input.GetKeyDown (KeyCode.E) && playerStatus.hasTrapDestroyer) 
+		{
+			
+		}
+
     }
 
     bool IsGrounded()

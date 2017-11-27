@@ -7,12 +7,22 @@ public class PlayerStatus : MonoBehaviour
     public bool haveKey = false;
     public bool hasExtraKey = false;
     public bool hasExtraTeleport = false;
+	public bool hasTrapDestroyer = false;
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.collider.tag == "Trap")
         {
-            Destroy(gameObject);
+			if (hasTrapDestroyer)
+			{
+				Destroy (collision.gameObject);
+				hasTrapDestroyer = false;
+			} 
+
+			else 
+			{
+				Destroy (gameObject);
+			}
         }
     }
 
@@ -29,7 +39,11 @@ public class PlayerStatus : MonoBehaviour
         if (other.tag == "ExtraTeleport")
         {
             hasExtraTeleport = true;
-        }
+		}
+		if (other.tag == "powerupTrapDestroyer")
+		{
+			hasTrapDestroyer = true;
+		}
     }
 
 }

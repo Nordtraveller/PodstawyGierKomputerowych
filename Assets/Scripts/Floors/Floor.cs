@@ -66,7 +66,7 @@ public class Floor : MonoBehaviour
         CreateExitTile();
         CreateKeyIndicator();
         CreateKey();
-        if (Random.Range(0, 100) > 90)
+        if (Random.Range(0, 100) > 75)
         {
             CreatePowerUp();
         }

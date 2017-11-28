@@ -8,6 +8,8 @@ public class KeyHUD : MonoBehaviour
 
     public Sprite[] Sprites;
 
+    public Image[] Letters;
+
     public Image KeyUI;
 
     public Image TeleportUI;
@@ -47,29 +49,35 @@ public class KeyHUD : MonoBehaviour
 	    if (PlayerStatus.hasExtraKey)
 	    {
             alphaSwapper(GoldenKeyUI, AlphaOfCollected);
-	    }
+            Letters[0].GetComponent<Image>().color = Color.green;
+        }
 	    else
 	    {
 	        alphaSwapper(GoldenKeyUI, AlphaOfNotCollected);
+	        Letters[0].GetComponent<Image>().color = Color.white;
         }
 
 	    if (PlayerStatus.hasExtraTeleport)
 	    {
 	        alphaSwapper(TeleportUI, AlphaOfCollected);
+	        Letters[1].GetComponent<Image>().color = Color.green;
         }
 	    else
 	    {
 	        alphaSwapper(TeleportUI, AlphaOfNotCollected);
+	        Letters[1].GetComponent<Image>().color = Color.white;
         }
 
 		if (PlayerStatus.hasTrapDestroyer)
 		{
 			alphaSwapper (TrapDestroyerUI, AlphaOfCollected);
-		} 
+		    Letters[2].GetComponent<Image>().color = Color.green;
+        } 
 		else
 		{
 			alphaSwapper (TrapDestroyerUI, AlphaOfNotCollected);
-		}
+		    Letters[2].GetComponent<Image>().color = Color.white;
+        }
 
     }
 

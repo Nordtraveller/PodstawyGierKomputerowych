@@ -146,11 +146,15 @@ public class Floor : MonoBehaviour
         }
         while (powerUpTileNumber == entranceTileNumber || powerUpTileNumber == exitTileNumber || powerUpTileNumber == keyTileNumber);
         tilesList.RemoveAt(powerUpTileNumber);
-        PowerUp powerUp = Instantiate(powerUpsPrefabs[Random.Range(0, powerUpsPrefabs.Length)],
+        int random = Random.Range(0, powerUpsPrefabs.Length);
+        PowerUp powerUp = Instantiate(powerUpsPrefabs[random],
             new Vector3(powerUpTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
             this.transform.rotation, this.transform);
+        if (random == 2)
+        {
+            powerUp.transform.Rotate(transform.rotation.x, transform.rotation.y + 90.0f, transform.rotation.z);
+        }
         powerUpList.Add(powerUp);
-
     }
 
     private bool CheckTrapPosition(int tileNumber, int trapSize)

@@ -7,7 +7,7 @@ public class HiddenTrap : MonoBehaviour {
 	private bool m_renderAndPhysics;
 	private bool m_hidden;
 	private float m_translateYStart;
-	private float m_translateYEnd;
+	//private float m_translateYEnd;
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +15,7 @@ public class HiddenTrap : MonoBehaviour {
 		m_renderAndPhysics = true;
 		m_hidden = false;
 		m_translateYStart = this.transform.position.y;
-		m_translateYEnd = m_translateYStart + 0.5f;
+		//m_translateYEnd = m_translateYStart + 0.5f;
 	
 
 	}

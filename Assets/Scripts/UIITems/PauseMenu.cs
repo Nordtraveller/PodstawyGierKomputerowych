@@ -9,6 +9,10 @@ public class PauseMenu : MonoBehaviour {
 
     public GameObject PauseObject;
 
+    public GameObject HighScorePanel;
+
+    private bool IsScore = false;
+
     private bool IsPaused = false;
 
     // Use this for initialization
@@ -59,6 +63,12 @@ public class PauseMenu : MonoBehaviour {
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void Score()
+    {
+        IsScore = !IsScore;
+        HighScorePanel.SetActive(IsScore);
     }
 
 }

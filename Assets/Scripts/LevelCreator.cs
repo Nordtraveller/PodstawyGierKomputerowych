@@ -32,7 +32,7 @@ public class LevelCreator : MonoBehaviour
 	private GameObject m_gameObjectPlane;
 	private GameObject m_gameObjectPlane2;
 
-    private GameStatsCounter gameStatsCounter;
+
 
 
     private void Awake()
@@ -46,7 +46,6 @@ public class LevelCreator : MonoBehaviour
 		m_gameObjectPlane = GameObject.Find ("backgroundTexture");
 		m_gameObjectPlane2 = GameObject.Find ("backgroundTexture2");
 
-        gameStatsCounter = GameObject.FindGameObjectWithTag("GameStatsCounter").GetComponent<GameStatsCounter>();
     }
 
     private void Update()
@@ -181,7 +180,6 @@ public class LevelCreator : MonoBehaviour
 
     public void DropUpperFloor()
     {
-        gameStatsCounter.levelsPassedCount += 1;
 
         CreateNewFloor();
 

@@ -26,4 +26,11 @@ public static class GameMetrics
 
     #endregion
 
+    #region High Score
+
+    public static List<int> maxLevelsPassedCountList = new List<int>(new int[5]);
+    public static int DeathsCount = 0;
+
+    #endregion
+
 }

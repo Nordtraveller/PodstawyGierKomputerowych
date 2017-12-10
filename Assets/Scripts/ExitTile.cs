@@ -27,6 +27,7 @@ public class ExitTile : MonoBehaviour
             playerControlls.fireFloor = false;
             playerControlls.windyFloor = false;
             playerControlls.bouncyFloor = false;
+            this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
             Destroy(this);
         }
     }

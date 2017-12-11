@@ -11,9 +11,12 @@ public class PlayerControlls : MonoBehaviour
     private PlayerStatus playerStatus;
     private LevelCreator level;
 
+    public Light dirLight;
+    public Light pointLight;
     public bool fireFloor = false;
     public bool bouncyFloor = false;
     public bool windyFloor = false;
+    public bool darkFloor = false;
     private float jumpDelay = 0.02f;
 
     public GameObject shield;
@@ -22,6 +25,8 @@ public class PlayerControlls : MonoBehaviour
     {
         level = GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>();
         playerStatus = GameObject.Find("Player").GetComponent<PlayerStatus>();
+        dirLight = GameObject.FindWithTag("Directional light").GetComponent<Light>();
+        pointLight = GameObject.FindWithTag("Point light").GetComponent<Light>();
         body = GetComponentInChildren<Rigidbody>();
         distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;
     }
@@ -29,6 +34,7 @@ public class PlayerControlls : MonoBehaviour
     void Update ()
     {
         Vector3 position = transform.position;
+        pointLight.transform.position = new Vector3(position.x + 0.2f, position.y, position.z);
         if (fireFloor)
         {
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
@@ -40,6 +46,12 @@ public class PlayerControlls : MonoBehaviour
             direction = -0.3f;
             position.x += direction * Time.deltaTime * GameMetrics.playerSpeed  
                            + Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
+        }
+        else if (darkFloor)
+        {
+            if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
+            if (Input.GetAxis("Horizontal") > 0) direction = 0.8f;
+            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
         }
         else
         {

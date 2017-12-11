@@ -17,6 +17,7 @@ public class DarkTile : MonoBehaviour {
     {
         if (collision.collider.tag == "Player")
         {
+            player.darkFloor = true;
             player.dirLight.enabled = false;
             player.pointLight.enabled = true;
         }

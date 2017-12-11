@@ -16,6 +16,7 @@ public class WindyTile : MonoBehaviour
         if (collision.collider.tag == "Player")
         {
             player.windyFloor = true;
+
         }
     }
 

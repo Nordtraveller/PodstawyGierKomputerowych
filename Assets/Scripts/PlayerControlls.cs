@@ -34,7 +34,7 @@ public class PlayerControlls : MonoBehaviour
     void Update ()
     {
         Vector3 position = transform.position;
-        pointLight.transform.position = new Vector3(position.x + 0.2f, position.y, position.z);
+        pointLight.transform.position = new Vector3(position.x + 1.5f, position.y, position.z);
         if (fireFloor)
         {
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;

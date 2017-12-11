@@ -16,6 +16,8 @@ public class PlayerControlls : MonoBehaviour
     public bool windyFloor = false;
     private float jumpDelay = 0.02f;
 
+    public GameObject shield;
+
     void Start ()
     {
         level = GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>();
@@ -74,6 +76,16 @@ public class PlayerControlls : MonoBehaviour
 			
 		}
 
+        //shield
+        if (playerStatus.hasTrapDestroyer)
+        {
+            shield.SetActive(true);
+            shield.transform.position = new Vector3(transform.position.x + 0.25f, transform.position.y, transform.position.z);
+        }
+        if (!playerStatus.hasTrapDestroyer)
+        {
+            shield.SetActive(false);
+        }
     }
 
     bool IsGrounded()

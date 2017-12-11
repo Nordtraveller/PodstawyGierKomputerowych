@@ -34,7 +34,7 @@ public class PlayerControlls : MonoBehaviour
     void Update ()
     {
         Vector3 position = transform.position;
-        pointLight.transform.position = new Vector3(position.x + 1.5f, position.y, position.z);
+        pointLight.transform.position = new Vector3(position.x + 1.0f, position.y, position.z);
         if (fireFloor)
         {
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
@@ -47,12 +47,7 @@ public class PlayerControlls : MonoBehaviour
             position.x += direction * Time.deltaTime * GameMetrics.playerSpeed  
                            + Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
         }
-        //else if (darkFloor)
-        //{
-        //    if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
-        //    if (Input.GetAxis("Horizontal") > 0) direction = 0.8f;
-        //    position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
-        //}
+        
         else
         {
             position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;

@@ -8,10 +8,16 @@ public class FallingTrap : MonoBehaviour {
     private float startYPosition;
     private float endYPosition;
     private float speed = 8.5f;
+    PlayerControlls player;
 
 
     // Use this for initialization
     void Start () {
+        do
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControlls>();
+        }
+        while (player == null);
         isActive = false;
 
         startYPosition =(float)GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>()
@@ -25,7 +31,7 @@ public class FallingTrap : MonoBehaviour {
 	void Update () {
 	    if (!isActive)
 	    {
-	        float playerX = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.x;
+	        float playerX = player.transform.position.x;
             if (((this.transform.position.x + 1.3f) >= playerX) &&
                 ((this.transform.position.x - 1.3f) <= playerX))
             {

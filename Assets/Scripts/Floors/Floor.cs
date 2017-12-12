@@ -136,12 +136,12 @@ public class Floor : MonoBehaviour
             Trap trap = Instantiate(prefab,
                 new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
                 prefab.transform.rotation, this.transform);
+            trapList.Add(trap);
             for (int a = 0; a < trap.size; a++)
             {
                 tilesList.Remove(trapTileNumber + a);
             }
             trap.SetPositionOnFloor(trapTileNumber);
-            trapList.Add(trap);
             i += trap.size;
         }
     }
@@ -195,34 +195,43 @@ public class Floor : MonoBehaviour
 
     private void DestroyTraps()
     {
+        trapList.RemoveAll(x => x == null);
         for (int i = 0; i < trapList.Count; i++)
         {
-            Destroy(trapList[i].gameObject);
+            GameObject trap = trapList[i].gameObject;
+            Destroy(trap);
         }
+        trapList.RemoveAll(x => x == null);
     }
 
     private void DestroyPowerUps()
     {
+        powerUpList.RemoveAll(x => x == null);
         for (int i = 0; i < powerUpList.Count; i++)
         {
             Destroy(powerUpList[i].gameObject);
         }
+        powerUpList.RemoveAll(x => x == null);
     }
 
     private void DestroyKey()
     {
+        keyList.RemoveAll(x => x == null);
         for (int i = 0; i < keyList.Count; i++)
         {
             Destroy(keyList[i].gameObject);
         }
+        keyList.RemoveAll(x => x == null);
     }
 
     private void DestroyKeyIndicator()
     {
+        keyIndicatorList.RemoveAll(x => x == null);
         for (int i = 0; i < keyIndicatorList.Count; i++)
         {
             Destroy(keyIndicatorList[i].gameObject);
         }
+        keyIndicatorList.RemoveAll(x => x == null);
     }
 
     public void DestroyItemsOnFloor()

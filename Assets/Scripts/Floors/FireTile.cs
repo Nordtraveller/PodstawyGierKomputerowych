@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class FireTile : MonoBehaviour
 {
-    private PlayerControlls player;
-
-    private void Start()
-    {
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>();
-    }
-
     private void OnCollisionStay(Collision collision)
     {
         if (collision.collider.tag == "Player")
         {
-            player.fireFloor = true;
+            collision.gameObject.GetComponent<PlayerControlls>().fireFloor = true;
         }
     }
 

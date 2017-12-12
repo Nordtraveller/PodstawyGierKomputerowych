@@ -12,25 +12,28 @@ public class ExitTile : MonoBehaviour
     private void Awake()
     {
         creator = GetComponentInParent<LevelCreator>();
-        player = GameObject.Find("Player").GetComponent<PlayerStatus>();
-        playerControlls = GameObject.Find("Player").GetComponent<PlayerControlls>();
         gameStatsCounter = GameObject.FindGameObjectWithTag("GameStatsCounter").GetComponent<GameStatsCounter>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player" && player.haveKey == true )
+        if (other.tag == "Player")
         {
-            gameStatsCounter.levelsPassedCount += 1;
-            creator.playerTriggerDrop = true;
-            creator.DropUpperFloor();
-            playerControlls.fireFloor = false;
-            playerControlls.windyFloor = false;
-            playerControlls.bouncyFloor = false;
-            playerControlls.dirLight.enabled = true;
-            playerControlls.pointLight.enabled = false;
-            this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
-            Destroy(this);
+            PlayerStatus player = other.gameObject.GetComponent<PlayerStatus>();
+            PlayerControlls playerControlls = other.gameObject.GetComponent<PlayerControlls>();
+            if (player.haveKey == true)
+            {
+                gameStatsCounter.levelsPassedCount += 1;
+                creator.playerTriggerDrop = true;
+                creator.DropUpperFloor();
+                playerControlls.fireFloor = false;
+                playerControlls.windyFloor = false;
+                playerControlls.bouncyFloor = false;
+                playerControlls.dirLight.enabled = true;
+                playerControlls.pointLight.enabled = false;
+                this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+                Destroy(this);
+            }
         }
     }
 

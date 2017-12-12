@@ -4,23 +4,20 @@ using UnityEngine;
 
 public class FloorEntranceTile : MonoBehaviour
 {
-    private PlayerStatus player;
-
-    private void Start()
-    {
-        player = GameObject.Find("Player").GetComponent<PlayerStatus>();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if(player.haveKey)
+        if (other.tag == "Player")
         {
-            player.haveKey = false;
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            Destroy(player.gameObject);
+            PlayerStatus player = other.gameObject.GetComponent<PlayerStatus>();
+            if (player.haveKey)
+            {
+                player.haveKey = false;
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Destroy(player.gameObject);
+            }
         }
     }
 }

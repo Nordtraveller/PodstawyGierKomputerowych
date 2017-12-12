@@ -7,9 +7,7 @@ public class FallingTrap : MonoBehaviour {
     private bool isActive;
     private float startYPosition;
     private float endYPosition;
-    private Vector3 start;
-    private Vector3 target;
-    private float speed = 14f;
+    private float speed = 8.5f;
 
 
     // Use this for initialization
@@ -21,19 +19,19 @@ public class FallingTrap : MonoBehaviour {
         endYPosition = (float)GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>()
                                                    .actualFloor.transform.position.y;
         transform.position = new Vector3(transform.position.x, startYPosition -1.3f, transform.position.z);
-
-
-
     }
 	
 	// Update is called once per frame
 	void Update () {
-        float playerX = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.x;
-        if (((this.transform.position.x + 1.3f) >= playerX) &&
-            ((this.transform.position.x - 1.3f) <= playerX))
-        {
-            this.isActive = true;
-        }
+	    if (!isActive)
+	    {
+	        float playerX = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.x;
+            if (((this.transform.position.x + 1.3f) >= playerX) &&
+                ((this.transform.position.x - 1.3f) <= playerX))
+            {
+                this.isActive = true;
+            }
+	    }
 
         if (isActive)
         {
@@ -42,8 +40,9 @@ public class FallingTrap : MonoBehaviour {
             transform.position.z);
         }
 
-        if (transform.position.y == endYPosition+2f)
+        if (transform.position.y < endYPosition +1.0f)
         {
+            Destroy(transform.parent.gameObject);
             Destroy(gameObject);
         }
     }

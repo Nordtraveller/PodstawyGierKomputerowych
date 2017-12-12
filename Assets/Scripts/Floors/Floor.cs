@@ -122,9 +122,17 @@ public class Floor : MonoBehaviour
                 prefab = trapsPrefabs[Random.Range(0, trapsPrefabs.Length)];
                 trapTileNumber = tilesList[Random.Range(0, tilesList.Count)];
                 tryCounter++;
+
+				//Debug.Log(tryCounter);
+
+				if (tryCounter > 20)
+				{
+					Debug.Log("TU MOGLABY BYĆ ZWIECHA");
+					break;
+				}
             }
             while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber
-            || trapTileNumber == powerUpTileNumber || CheckTrapPosition(trapTileNumber, prefab.size) || tryCounter < 10);
+            || trapTileNumber == powerUpTileNumber || CheckTrapPosition(trapTileNumber, prefab.size));
             Trap trap = Instantiate(prefab,
                 new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
                 prefab.transform.rotation, this.transform);

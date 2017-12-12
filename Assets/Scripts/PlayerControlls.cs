@@ -21,6 +21,7 @@ public class PlayerControlls : MonoBehaviour
 
     public GameObject shield;
 
+
     void Start ()
     {
         level = GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>();
@@ -53,6 +54,22 @@ public class PlayerControlls : MonoBehaviour
             position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
         }
         transform.position = position;
+
+
+        if (level.getUpperFloor().tilePrefab.name == "DarkTile" && level.getUpperFloor().transform.position.y <= 3.0f)
+        {
+            darkFloor = true;
+        }
+        if (darkFloor)
+        {
+            dirLight.enabled = false;
+            pointLight.enabled = true;
+        }
+        if (!darkFloor)
+        {
+            dirLight.enabled = true;
+            pointLight.enabled = false;
+        }
 
         jumpDelay -= Time.deltaTime;
         if (IsGrounded() && bouncyFloor && jumpDelay < 0)

@@ -20,7 +20,7 @@ public class FallingTrap : MonoBehaviour {
             .getUpperFloor().transform.position.y;
         endYPosition = (float)GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>()
                                                    .actualFloor.transform.position.y;
-        transform.position = new Vector3(transform.position.x, startYPosition -1.5f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, startYPosition -1.3f, transform.position.z);
 
 
 
@@ -29,8 +29,8 @@ public class FallingTrap : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float playerX = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.x;
-        if (((this.transform.position.x + 0.9f) >= playerX) &&
-            ((this.transform.position.x - 0.9f) <= playerX))
+        if (((this.transform.position.x + 1.3f) >= playerX) &&
+            ((this.transform.position.x - 1.3f) <= playerX))
         {
             this.isActive = true;
         }
@@ -40,7 +40,6 @@ public class FallingTrap : MonoBehaviour {
             float step = speed * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y - step,
             transform.position.z);
-            Debug.Log(transform.position.y);
         }
 
         if (transform.position.y == endYPosition+2f)

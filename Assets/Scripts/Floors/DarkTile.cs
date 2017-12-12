@@ -10,8 +10,6 @@ public class DarkTile : MonoBehaviour {
         {
            PlayerControlls player =  collision.gameObject.GetComponent<PlayerControlls>();
             player.darkFloor = true;
-            player.dirLight.enabled = false;
-            player.pointLight.enabled = true;
         }
     }
 }

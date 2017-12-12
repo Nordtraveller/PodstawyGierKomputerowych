@@ -34,6 +34,7 @@ public class ExitTile : MonoBehaviour
                 this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
                 Destroy(this);
             }
+
         }
     }
 

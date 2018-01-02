@@ -10,6 +10,7 @@ public class PlayerControlls : MonoBehaviour
     private float direction = 0;
     private PlayerStatus playerStatus;
     private LevelCreator level;
+    private Animator animator;
 
     public Light dirLight;
     public Light pointLight;
@@ -30,6 +31,7 @@ public class PlayerControlls : MonoBehaviour
         pointLight = GameObject.FindWithTag("Point light").GetComponent<Light>();
         body = GetComponentInChildren<Rigidbody>();
         distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update ()
@@ -52,6 +54,25 @@ public class PlayerControlls : MonoBehaviour
         else
         {
             position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
+        }
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            animator.SetBool("IsMoveLeft", true);
+            animator.SetBool("IsMoveRight", false);
+            //animator.SetBool("IsFacingLeft", true);
+            //animator.SetBool("IsFacingRight", false);
+        }
+        else if (Input.GetAxis("Horizontal") > 0)
+        {
+            animator.SetBool("IsMoveLeft", false);
+            animator.SetBool("IsMoveRight", true);
+            //animator.SetBool("IsFacingLeft", false);
+            //animator.SetBool("IsFacingRight", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoveLeft", false);
+            animator.SetBool("IsMoveRight", false);
         }
         transform.position = position;
 

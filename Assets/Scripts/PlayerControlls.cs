@@ -49,8 +49,7 @@ public class PlayerControlls : MonoBehaviour
             direction = -0.3f;
             position.x += direction * Time.deltaTime * GameMetrics.playerSpeed  
                            + Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
-        }
-        
+        }      
         else
         {
             position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
@@ -69,7 +68,7 @@ public class PlayerControlls : MonoBehaviour
             //animator.SetBool("IsFacingLeft", false);
             //animator.SetBool("IsFacingRight", true);
         }
-        else
+        else if(!fireFloor)
         {
             animator.SetBool("IsMoveLeft", false);
             animator.SetBool("IsMoveRight", false);
@@ -93,14 +92,26 @@ public class PlayerControlls : MonoBehaviour
         }
 
         jumpDelay -= Time.deltaTime;
-        if (IsGrounded() && bouncyFloor && jumpDelay < 0)
+        if(bouncyFloor)
         {
-            jumpDelay = 0.02f;
-            body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+            if (IsGrounded() && jumpDelay < 0)
+            {
+                jumpDelay = 0.02f;
+                body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+                animator.SetBool("IsJumping", true);
+            }
         }
-        if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
+        else
         {
-            body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+            if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
+            {
+                body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+                animator.SetBool("IsJumping", true);
+            }
+            else if (IsGrounded())
+            {
+                animator.SetBool("IsJumping", false);
+            }
         }
 
         //special keys

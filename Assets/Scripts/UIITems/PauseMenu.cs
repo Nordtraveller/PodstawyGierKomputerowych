@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
 
+    public Image[] HUDActivationDisplayers;
 
+    public GameObject[] HUDElements;
 
     public GameObject PauseObject;
 
@@ -26,9 +29,8 @@ public class PauseMenu : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		PauseObject.SetActive(false);
-
-
-	}
+        setColors();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -92,6 +94,30 @@ public class PauseMenu : MonoBehaviour {
     }
 
 
+    public void TimerDisplayChangeStatus()
+    {
+        HUDElements[0].SetActive(!HUDElements[0].active);
+        setColors();
+    }
+
+    public void AbilitiesDisplayChangeStatus()
+    {
+        HUDElements[1].SetActive(!HUDElements[1].active);
+        setColors();
+    }
+
+    public void MiniMapDisplayChangeStatus()
+    {
+        HUDElements[2].SetActive(!HUDElements[2].active);
+        setColors();
+    }
+
+    public void lvlCountDisplayChangeStatus()
+    {
+        HUDElements[3].SetActive(!HUDElements[3].active);
+        setColors();
+    }
+
 
     private void ScoreOff()
     {
@@ -127,5 +153,20 @@ public class PauseMenu : MonoBehaviour {
         HighScorePanel.SetActive(IsScore);
         GameOptionsPanel.SetActive(IsGameOptions);
         HUDOptionsPanel.SetActive(IsHUDOptions);
+    }
+
+    private void setColors()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (HUDElements[i].active)
+            {
+                HUDActivationDisplayers[i].GetComponent<Image>().color = Color.green;
+            }
+            else
+            {
+                HUDActivationDisplayers[i].GetComponent<Image>().color = Color.red;
+            }
+        }
     }
 }

@@ -11,9 +11,17 @@ public class PauseMenu : MonoBehaviour {
 
     public GameObject HighScorePanel;
 
+    public GameObject GameOptionsPanel;
+
+    public GameObject HUDOptionsPanel;
+
+    private bool IsGameOptions = false;
+
     private bool IsScore = false;
 
     private bool IsPaused = false;
+
+    private bool IsHUDOptions = false;
 
     // Use this for initialization
     void Start () {
@@ -40,6 +48,7 @@ public class PauseMenu : MonoBehaviour {
 	    if (!IsPaused)
 	    {
 	        PauseObject.SetActive(false);
+            CollapseAll();
 	        Time.timeScale = 1;
         }
 	}
@@ -57,6 +66,9 @@ public class PauseMenu : MonoBehaviour {
 
     public void Options()
     {
+        CollapseAll();
+        IsGameOptions = !IsGameOptions;
+        GameOptionsPanel.SetActive(IsGameOptions);
         //SceneManager.LoadScene(1); -> difficulty, graphic, ?skins?
     }
 
@@ -67,8 +79,53 @@ public class PauseMenu : MonoBehaviour {
 
     public void Score()
     {
+        CollapseAll();
         IsScore = !IsScore;
         HighScorePanel.SetActive(IsScore);
     }
 
+    public void HUDOptions()
+    {
+        CollapseAll();
+        IsHUDOptions = !IsHUDOptions;
+        HUDOptionsPanel.SetActive(IsHUDOptions);
+    }
+
+
+
+    private void ScoreOff()
+    {
+        if (IsScore)
+        {
+            IsScore = !IsScore;
+            HighScorePanel.SetActive(IsScore);
+        }
+    }
+    private void OptionsOff()
+    {
+        if (IsGameOptions)
+        {
+            IsGameOptions = !IsGameOptions;
+            GameOptionsPanel.SetActive(IsGameOptions);
+        }
+    }
+
+    private void HUDOptionsOff()
+    {
+        if (IsHUDOptions)
+        {
+            IsHUDOptions = !IsHUDOptions;
+            HUDOptionsPanel.SetActive(IsHUDOptions);
+        }
+    }
+
+    private void CollapseAll()
+    {
+        IsScore = false;
+        IsGameOptions = false;
+        IsHUDOptions = false;
+        HighScorePanel.SetActive(IsScore);
+        GameOptionsPanel.SetActive(IsGameOptions);
+        HUDOptionsPanel.SetActive(IsHUDOptions);
+    }
 }

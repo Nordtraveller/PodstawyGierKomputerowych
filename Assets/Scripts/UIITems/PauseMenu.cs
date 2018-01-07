@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour {
 
     public Image[] HUDActivationDisplayers;
 
+    public Image AudioActivationDisplayer;
+
     public GameObject[] HUDElements;
 
     public GameObject PauseObject;
@@ -17,6 +19,8 @@ public class PauseMenu : MonoBehaviour {
     public GameObject GameOptionsPanel;
 
     public GameObject HUDOptionsPanel;
+
+    private AudioSource Sounds;
 
     private bool IsGameOptions = false;
 
@@ -28,8 +32,10 @@ public class PauseMenu : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		PauseObject.SetActive(false);
-        setColors();
+        Sounds = GameObject.FindGameObjectWithTag("LevelCreator").GetComponent<AudioSource>();
+        PauseObject.SetActive(false);
+        setColorsHUD();
+        setColorsSound();
     }
 	
 	// Update is called once per frame
@@ -97,26 +103,34 @@ public class PauseMenu : MonoBehaviour {
     public void TimerDisplayChangeStatus()
     {
         HUDElements[0].SetActive(!HUDElements[0].active);
-        setColors();
+        setColorsHUD();
     }
 
     public void AbilitiesDisplayChangeStatus()
     {
         HUDElements[1].SetActive(!HUDElements[1].active);
-        setColors();
+        setColorsHUD();
     }
 
     public void MiniMapDisplayChangeStatus()
     {
         HUDElements[2].SetActive(!HUDElements[2].active);
-        setColors();
+        setColorsHUD();
     }
 
     public void lvlCountDisplayChangeStatus()
     {
         HUDElements[3].SetActive(!HUDElements[3].active);
-        setColors();
+        setColorsHUD();
     }
+
+
+    public void SoundsActiveChangeStatus()
+    {
+        Sounds.mute = !Sounds.mute;
+        setColorsSound();
+    }
+
 
 
     private void ScoreOff()
@@ -155,7 +169,7 @@ public class PauseMenu : MonoBehaviour {
         HUDOptionsPanel.SetActive(IsHUDOptions);
     }
 
-    private void setColors()
+    private void setColorsHUD()
     {
         for (int i = 0; i < 4; i++)
         {
@@ -168,5 +182,17 @@ public class PauseMenu : MonoBehaviour {
                 HUDActivationDisplayers[i].GetComponent<Image>().color = Color.red;
             }
         }
+    }
+
+    private void setColorsSound()
+    {
+        if (!Sounds.mute)
+        {
+            AudioActivationDisplayer.GetComponent<Image>().color = Color.green;
+        }
+        else
+        {
+            AudioActivationDisplayer.GetComponent<Image>().color = Color.red;
+        } 
     }
 }

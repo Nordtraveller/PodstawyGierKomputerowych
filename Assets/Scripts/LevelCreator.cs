@@ -22,9 +22,12 @@ public class LevelCreator : MonoBehaviour
     private float timeLeft;
     private PlayerControlls player;
     private CameraController cameraController;
+    private GameStatsCounter levelCounter;
 
-	private float timeDeltaOneSecondInterval = 0.0f;
+    private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
+    private int floorsUnlocked = 2;
+    private int unlockRate = 5;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
@@ -40,6 +43,7 @@ public class LevelCreator : MonoBehaviour
         CreateFirstFloor();
         player = GameObject.Find("Player").GetComponent<PlayerControlls>();
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        levelCounter = GameObject.Find("GameStatsCounter").GetComponent<GameStatsCounter>();
 
 		audioSrc = GetComponent<AudioSource>();
 
@@ -50,6 +54,7 @@ public class LevelCreator : MonoBehaviour
 
     private void Update()
     {
+        UnlockFloors();
         if(player == null)
         {
                 DropUpperFloor();
@@ -155,23 +160,39 @@ public class LevelCreator : MonoBehaviour
 
     void CreateFirstFloor()
     {
-        actualFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], Vector3.zero, this.transform.rotation, this.transform);
+        actualFloor = Instantiate(floorPrefabList[Random.Range(0, floorsUnlocked)], Vector3.zero, this.transform.rotation, this.transform);
         actualFloor.entranceTileNumber = -1;
         actualFloor.CreateTiles();
         exitTileNumber = actualFloor.GetExitTileNumber();
         timeLeft = actualFloor.timeForFloor;
         ui_slider_timeLeft.maxValue = actualFloor.timeForFloor;
 
-        upperFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], new Vector3(0f, GameMetrics.upperFloorY, 0f),
+        upperFloor = Instantiate(floorPrefabList[Random.Range(0, floorsUnlocked)], new Vector3(0f, GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
         upperFloor.entranceTileNumber = exitTileNumber;
         upperFloor.CreateTiles();
         exitTileNumber = upperFloor.GetExitTileNumber();
     }
 
+    void UnlockFloors()
+    {
+        if (levelCounter.levelsPassedCount == unlockRate)
+        {
+            this.floorsUnlocked = 3;
+        }
+        if (levelCounter.levelsPassedCount == (unlockRate*2))
+        {
+            this.floorsUnlocked = 4;
+        }
+        if (levelCounter.levelsPassedCount == (unlockRate * 3))
+        {
+            this.floorsUnlocked = 5;
+        }
+    }
+
     void CreateNewFloor()
     {
-        newFloor = Instantiate(floorPrefabList[Random.Range(0, floorPrefabList.Length)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+        newFloor = Instantiate(floorPrefabList[Random.Range(0, floorsUnlocked)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
         newFloor.entranceTileNumber = exitTileNumber;
         newFloor.CreateTiles();

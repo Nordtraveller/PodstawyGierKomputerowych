@@ -18,7 +18,12 @@ public class PlayerControlls : MonoBehaviour
     public bool bouncyFloor = false;
     public bool windyFloor = false;
     public bool darkFloor = false;
+    public bool cosmicFloor = false;
+    public bool changingLightFloor = false;
     private float jumpDelay = 0.02f;
+    private float previousTime = 0f;
+    private float newTime = 0f;
+    private bool directionalLight = false;
 
     public GameObject shield;
 
@@ -36,8 +41,18 @@ public class PlayerControlls : MonoBehaviour
 
     void Update ()
     {
+        newTime += Time.deltaTime;
+        if((previousTime + 0.75f) < newTime)
+        {
+            previousTime = newTime;
+            directionalLight = !directionalLight;
+        }
         Vector3 position = transform.position;
         pointLight.transform.position = new Vector3(position.x + 1.0f, position.y, position.z);
+        if(cosmicFloor)
+        {
+            // ???
+        }
         if (fireFloor)
         {
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
@@ -89,6 +104,11 @@ public class PlayerControlls : MonoBehaviour
         {
             dirLight.enabled = true;
             pointLight.enabled = false;
+        }
+
+        if(changingLightFloor)
+        {
+            dirLight.enabled = directionalLight;
         }
 
         jumpDelay -= Time.deltaTime;
@@ -143,6 +163,8 @@ public class PlayerControlls : MonoBehaviour
             shield.SetActive(false);
         }
     }
+
+
 
     bool IsGrounded()
     {

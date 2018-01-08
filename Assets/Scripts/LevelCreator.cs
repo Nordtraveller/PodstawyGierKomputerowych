@@ -28,7 +28,7 @@ public class LevelCreator : MonoBehaviour
 
     private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
-    private int unlockRate = 5;
+    private int unlockRate = 2;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
@@ -192,6 +192,11 @@ public class LevelCreator : MonoBehaviour
             GameMetrics.floorsUnlocked = 5;
             StartCoroutine(ShowMessage("New floor unlocked! Chew you gum!"));
         }
+        if (levelCounter.levelsPassedCount == (unlockRate * 4) && GameMetrics.floorsUnlocked < 6)
+        {
+            GameMetrics.floorsUnlocked = 6;
+            StartCoroutine(ShowMessage("New floor unlocked! Epilepsy!"));
+        }
     }
 
     void CreateNewFloor()
@@ -213,6 +218,12 @@ public class LevelCreator : MonoBehaviour
             newFloor = Instantiate(floorPrefabList[4], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
            this.transform.rotation, this.transform);
             previousFloorIndex = 4;
+        }
+        else if (levelCounter.levelsPassedCount == (unlockRate * 4) - 1 && GameMetrics.floorsUnlocked < 6)
+        {
+            newFloor = Instantiate(floorPrefabList[5], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+           this.transform.rotation, this.transform);
+            previousFloorIndex = 5;
         }
         else
         {

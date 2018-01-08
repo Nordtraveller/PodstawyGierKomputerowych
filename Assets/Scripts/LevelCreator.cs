@@ -24,6 +24,7 @@ public class LevelCreator : MonoBehaviour
     private PlayerControlls player;
     private CameraController cameraController;
     private GameStatsCounter levelCounter;
+    private int previousFloorIndex = 0;
 
     private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
@@ -160,7 +161,7 @@ public class LevelCreator : MonoBehaviour
 
     void CreateFirstFloor()
     {
-        actualFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], Vector3.zero, this.transform.rotation, this.transform);
+        actualFloor = Instantiate(floorPrefabList[0], Vector3.zero, this.transform.rotation, this.transform);
         actualFloor.entranceTileNumber = -1;
         actualFloor.CreateTiles();
         exitTileNumber = actualFloor.GetExitTileNumber();
@@ -199,20 +200,29 @@ public class LevelCreator : MonoBehaviour
         {
             newFloor = Instantiate(floorPrefabList[2], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
+            previousFloorIndex = 2;
         }
         else if (levelCounter.levelsPassedCount == (unlockRate * 2)-1 && GameMetrics.floorsUnlocked < 4)
         {
             newFloor = Instantiate(floorPrefabList[3], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
            this.transform.rotation, this.transform);
+            previousFloorIndex = 3;
         }
         else if (levelCounter.levelsPassedCount == (unlockRate * 3)-1 && GameMetrics.floorsUnlocked < 5)
         {
             newFloor = Instantiate(floorPrefabList[4], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
            this.transform.rotation, this.transform);
+            previousFloorIndex = 4;
         }
         else
         {
-            newFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+            int randomizedInt = previousFloorIndex;
+            while (randomizedInt == previousFloorIndex)
+            {
+                randomizedInt = Random.Range(0, GameMetrics.floorsUnlocked);
+            }
+            previousFloorIndex = randomizedInt;
+            newFloor = Instantiate(floorPrefabList[randomizedInt], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
            this.transform.rotation, this.transform);
         }
         newFloor.entranceTileNumber = exitTileNumber;

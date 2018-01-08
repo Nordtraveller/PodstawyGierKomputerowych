@@ -179,17 +179,17 @@ public class LevelCreator : MonoBehaviour
         if (levelCounter.levelsPassedCount == unlockRate && GameMetrics.floorsUnlocked < 3 )
         {
             GameMetrics.floorsUnlocked = 3;
-            StartCoroutine(ShowMessage());
+            StartCoroutine(ShowMessage("New floor unlocked! Be carefull to not be blown away!"));
         }
         if (levelCounter.levelsPassedCount == (unlockRate*2) && GameMetrics.floorsUnlocked < 4)
         {
             GameMetrics.floorsUnlocked = 4;
-            StartCoroutine(ShowMessage());
+            StartCoroutine(ShowMessage("New floor unlocked! It can get really dark now. "));
         }
         if (levelCounter.levelsPassedCount == (unlockRate * 3) && GameMetrics.floorsUnlocked < 5)
         {
             GameMetrics.floorsUnlocked = 5;
-            StartCoroutine(ShowMessage());
+            StartCoroutine(ShowMessage("New floor unlocked! Chew you gum!"));
         }
     }
 
@@ -228,8 +228,9 @@ public class LevelCreator : MonoBehaviour
         targetReached = false;
     }
 
-    IEnumerator ShowMessage()
+    IEnumerator ShowMessage(string msg)
     {
+        ui_text_floorUnlocked.GetComponent<Text>().text = msg;
         ui_text_floorUnlocked.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         ui_text_floorUnlocked.SetActive(false);

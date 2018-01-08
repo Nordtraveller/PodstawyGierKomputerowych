@@ -34,6 +34,7 @@ public class PauseMenu : MonoBehaviour {
     void Start () {
         Sounds = GameObject.FindGameObjectWithTag("LevelCreator").GetComponent<AudioSource>();
         PauseObject.SetActive(false);
+        startUpSetings();
         setColorsHUD();
         setColorsSound();
     }
@@ -102,32 +103,37 @@ public class PauseMenu : MonoBehaviour {
 
     public void TimerDisplayChangeStatus()
     {
-        HUDElements[0].SetActive(!HUDElements[0].active);
+        GameMetrics.isTimer = !GameMetrics.isTimer;
+        HUDElements[0].SetActive(GameMetrics.isTimer);
         setColorsHUD();
     }
 
     public void AbilitiesDisplayChangeStatus()
     {
-        HUDElements[1].SetActive(!HUDElements[1].active);
+        GameMetrics.isAbilities = !GameMetrics.isAbilities;
+        HUDElements[1].SetActive(GameMetrics.isAbilities);
         setColorsHUD();
     }
 
     public void MiniMapDisplayChangeStatus()
     {
-        HUDElements[2].SetActive(!HUDElements[2].active);
+        GameMetrics.isMiniMap = !GameMetrics.isMiniMap;
+        HUDElements[2].SetActive(GameMetrics.isMiniMap);
         setColorsHUD();
     }
 
     public void lvlCountDisplayChangeStatus()
     {
-        HUDElements[3].SetActive(!HUDElements[3].active);
+        GameMetrics.islvlCount = !GameMetrics.islvlCount;
+        HUDElements[3].SetActive(GameMetrics.islvlCount);
         setColorsHUD();
     }
 
 
     public void SoundsActiveChangeStatus()
     {
-        Sounds.mute = !Sounds.mute;
+        GameMetrics.isMute = !GameMetrics.isMute;
+        Sounds.mute = GameMetrics.isMute;
         setColorsSound();
     }
 
@@ -194,5 +200,14 @@ public class PauseMenu : MonoBehaviour {
         {
             AudioActivationDisplayer.GetComponent<Image>().color = Color.red;
         } 
+    }
+
+    private void startUpSetings()
+    {
+        HUDElements[0].SetActive(GameMetrics.isTimer);
+        HUDElements[1].SetActive(GameMetrics.isAbilities);
+        HUDElements[2].SetActive(GameMetrics.isMiniMap);
+        HUDElements[3].SetActive(GameMetrics.islvlCount);
+        Sounds.mute = GameMetrics.isMute;
     }
 }

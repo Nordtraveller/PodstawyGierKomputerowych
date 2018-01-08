@@ -33,4 +33,15 @@ public static class GameMetrics
 
     #endregion
 
+    #region Menu
+
+    public static bool isTimer = true;
+    public static bool isAbilities = true;
+    public static bool isMiniMap = true;
+    public static bool islvlCount = true;
+    public static bool isMute = false;
+
+    #endregion
+
+
 }

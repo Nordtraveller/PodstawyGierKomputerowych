@@ -30,6 +30,8 @@ public class ExitTile : MonoBehaviour
                 playerControlls.windyFloor = false;
                 playerControlls.bouncyFloor = false;
                 playerControlls.darkFloor = false;
+                playerControlls.changingLightFloor = false;
+                playerControlls.cosmicFloor = false;
                 this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
                 Destroy(this);
             }

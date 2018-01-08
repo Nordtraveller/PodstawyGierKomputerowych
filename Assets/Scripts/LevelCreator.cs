@@ -28,7 +28,7 @@ public class LevelCreator : MonoBehaviour
 
     private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
-    private int unlockRate = 2;
+    private int unlockRate = 5;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;

@@ -9,6 +9,7 @@ public class LevelCreator : MonoBehaviour
     public ExitTile exitPrefab;
     public FloorEntranceTile entrancePrefab;
     public Text ui_text_timeLeft;
+    public GameObject ui_text_floorUnlocked;
     public Slider ui_slider_timeLeft;
 
     private int exitTileNumber;
@@ -26,7 +27,7 @@ public class LevelCreator : MonoBehaviour
 
     private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
-    private int unlockRate = 2;
+    private int unlockRate = 5;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
@@ -175,18 +176,20 @@ public class LevelCreator : MonoBehaviour
 
     void UnlockFloors()
     {
-        Debug.Log(GameMetrics.floorsUnlocked);
         if (levelCounter.levelsPassedCount == unlockRate && GameMetrics.floorsUnlocked < 3 )
         {
             GameMetrics.floorsUnlocked = 3;
+            StartCoroutine(ShowMessage());
         }
         if (levelCounter.levelsPassedCount == (unlockRate*2) && GameMetrics.floorsUnlocked < 4)
         {
             GameMetrics.floorsUnlocked = 4;
+            StartCoroutine(ShowMessage());
         }
         if (levelCounter.levelsPassedCount == (unlockRate * 3) && GameMetrics.floorsUnlocked < 5)
         {
             GameMetrics.floorsUnlocked = 5;
+            StartCoroutine(ShowMessage());
         }
     }
 
@@ -223,6 +226,13 @@ public class LevelCreator : MonoBehaviour
 
         startTime = Time.time;
         targetReached = false;
+    }
+
+    IEnumerator ShowMessage()
+    {
+        ui_text_floorUnlocked.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        ui_text_floorUnlocked.SetActive(false);
     }
 
 

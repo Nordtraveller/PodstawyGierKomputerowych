@@ -26,8 +26,7 @@ public class LevelCreator : MonoBehaviour
 
     private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
-    private int floorsUnlocked = 2;
-    private int unlockRate = 5;
+    private int unlockRate = 2;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
@@ -160,14 +159,14 @@ public class LevelCreator : MonoBehaviour
 
     void CreateFirstFloor()
     {
-        actualFloor = Instantiate(floorPrefabList[Random.Range(0, floorsUnlocked)], Vector3.zero, this.transform.rotation, this.transform);
+        actualFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], Vector3.zero, this.transform.rotation, this.transform);
         actualFloor.entranceTileNumber = -1;
         actualFloor.CreateTiles();
         exitTileNumber = actualFloor.GetExitTileNumber();
         timeLeft = actualFloor.timeForFloor;
         ui_slider_timeLeft.maxValue = actualFloor.timeForFloor;
 
-        upperFloor = Instantiate(floorPrefabList[Random.Range(0, floorsUnlocked)], new Vector3(0f, GameMetrics.upperFloorY, 0f),
+        upperFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], new Vector3(0f, GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
         upperFloor.entranceTileNumber = exitTileNumber;
         upperFloor.CreateTiles();
@@ -176,23 +175,24 @@ public class LevelCreator : MonoBehaviour
 
     void UnlockFloors()
     {
-        if (levelCounter.levelsPassedCount == unlockRate)
+        Debug.Log(GameMetrics.floorsUnlocked);
+        if (levelCounter.levelsPassedCount == unlockRate && GameMetrics.floorsUnlocked < 3 )
         {
-            this.floorsUnlocked = 3;
+            GameMetrics.floorsUnlocked = 3;
         }
-        if (levelCounter.levelsPassedCount == (unlockRate*2))
+        if (levelCounter.levelsPassedCount == (unlockRate*2) && GameMetrics.floorsUnlocked < 4)
         {
-            this.floorsUnlocked = 4;
+            GameMetrics.floorsUnlocked = 4;
         }
-        if (levelCounter.levelsPassedCount == (unlockRate * 3))
+        if (levelCounter.levelsPassedCount == (unlockRate * 3) && GameMetrics.floorsUnlocked < 5)
         {
-            this.floorsUnlocked = 5;
+            GameMetrics.floorsUnlocked = 5;
         }
     }
 
     void CreateNewFloor()
     {
-        newFloor = Instantiate(floorPrefabList[Random.Range(0, floorsUnlocked)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+        newFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
         newFloor.entranceTileNumber = exitTileNumber;
         newFloor.CreateTiles();

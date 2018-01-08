@@ -23,6 +23,7 @@ public static class GameMetrics
     public static float playerSpeed = 8f;
     public static float playerJumpForce = 13f;
     public static float playerRaycastDistance = 2f;
+    public static int floorsUnlocked = 2;
 
     #endregion
 

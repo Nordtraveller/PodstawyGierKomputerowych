@@ -195,8 +195,26 @@ public class LevelCreator : MonoBehaviour
 
     void CreateNewFloor()
     {
-        newFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+        if(levelCounter.levelsPassedCount == unlockRate-1 && GameMetrics.floorsUnlocked < 3)
+        {
+            newFloor = Instantiate(floorPrefabList[2], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
             this.transform.rotation, this.transform);
+        }
+        else if (levelCounter.levelsPassedCount == (unlockRate * 2)-1 && GameMetrics.floorsUnlocked < 4)
+        {
+            newFloor = Instantiate(floorPrefabList[3], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+           this.transform.rotation, this.transform);
+        }
+        else if (levelCounter.levelsPassedCount == (unlockRate * 3)-1 && GameMetrics.floorsUnlocked < 5)
+        {
+            newFloor = Instantiate(floorPrefabList[4], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+           this.transform.rotation, this.transform);
+        }
+        else
+        {
+            newFloor = Instantiate(floorPrefabList[Random.Range(0, GameMetrics.floorsUnlocked)], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+           this.transform.rotation, this.transform);
+        }
         newFloor.entranceTileNumber = exitTileNumber;
         newFloor.CreateTiles();
         exitTileNumber = newFloor.GetExitTileNumber();

@@ -36,8 +36,7 @@ public class LevelCreator : MonoBehaviour
 	private GameObject m_gameObjectPlane;
 	private GameObject m_gameObjectPlane2;
 
-
-
+	private float m_fCountdown = 3f;
 
     private void Awake()
     {
@@ -53,15 +52,30 @@ public class LevelCreator : MonoBehaviour
 
     }
 
+
     private void Update()
     {
         UnlockFloors();
         if(player == null)
-        {
-                DropUpperFloor();
-                ui_text_timeLeft.text = "Game Over";
-                cameraController.restartGame();
+        {			
+            m_fCountdown -= Time.deltaTime;
+			int nDelta = (int)m_fCountdown;
+
+			StartCoroutine(ShowMessage("Restarting in " + (nDelta+1)));
+	
+			if (m_fCountdown < 0)
+			{
+				m_fCountdown = 3;
+				DropUpperFloor();
+				cameraController.restartGame ();
+			} 
+			else 
+			{
+				return;
+			}            
         }
+
+
         if (!targetReached)
         {
             newFloor.transform.position = Vector3.Lerp(new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
@@ -180,7 +194,7 @@ public class LevelCreator : MonoBehaviour
         if (levelCounter.levelsPassedCount == unlockRate && GameMetrics.floorsUnlocked < 3 )
         {
             GameMetrics.floorsUnlocked = 3;
-            StartCoroutine(ShowMessage("New floor unlocked! Be carefull to not be blown away!"));
+            StartCoroutine(ShowMessage("New floor unlocked! Be careful to not be blown away!"));
         }
         if (levelCounter.levelsPassedCount == (unlockRate*2) && GameMetrics.floorsUnlocked < 4)
         {
@@ -271,7 +285,7 @@ public class LevelCreator : MonoBehaviour
     {
         ui_text_floorUnlocked.GetComponent<Text>().text = msg;
         ui_text_floorUnlocked.SetActive(true);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3.0f);
         ui_text_floorUnlocked.SetActive(false);
     }
 

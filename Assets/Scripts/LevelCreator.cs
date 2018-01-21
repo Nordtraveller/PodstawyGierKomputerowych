@@ -61,7 +61,12 @@ public class LevelCreator : MonoBehaviour
             m_fCountdown -= Time.deltaTime;
 			int nDelta = (int)m_fCountdown;
 
-			StartCoroutine(ShowMessage("Restarting in " + (nDelta+1)));
+            if (Input.GetButtonDown("Reset"))
+            {
+                m_fCountdown = -1;
+            }
+
+            StartCoroutine(ShowMessage("Press \"r\" for instant reset \n Restarting game in " + (nDelta+1)));
 	
 			if (m_fCountdown < 0)
 			{

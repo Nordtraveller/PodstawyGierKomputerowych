@@ -216,6 +216,11 @@ public class LevelCreator : MonoBehaviour
             GameMetrics.floorsUnlocked = 6;
             StartCoroutine(ShowMessage("New floor unlocked! Epilepsy!"));
         }
+        if (levelCounter.levelsPassedCount == (unlockRate * 5) && GameMetrics.floorsUnlocked < 7)
+        {
+            GameMetrics.floorsUnlocked = 7;
+            StartCoroutine(ShowMessage("New floor unlocked! Travel to the Moon!"));
+        }
     }
 
     void CreateNewFloor()
@@ -243,6 +248,12 @@ public class LevelCreator : MonoBehaviour
             newFloor = Instantiate(floorPrefabList[5], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
            this.transform.rotation, this.transform);
             previousFloorIndex = 5;
+        }
+        else if (levelCounter.levelsPassedCount == (unlockRate * 5) - 1 && GameMetrics.floorsUnlocked < 7)
+        {
+            newFloor = Instantiate(floorPrefabList[6], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
+                this.transform.rotation, this.transform);
+            previousFloorIndex = 6;
         }
         else
         {

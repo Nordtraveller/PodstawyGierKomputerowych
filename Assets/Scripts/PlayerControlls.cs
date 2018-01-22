@@ -49,10 +49,7 @@ public class PlayerControlls : MonoBehaviour
         }
         Vector3 position = transform.position;
         pointLight.transform.position = new Vector3(position.x + 1.0f, position.y, position.z);
-        if(cosmicFloor)
-        {
-            // ???
-        }
+
         if (fireFloor)
         {
             if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
@@ -125,7 +122,15 @@ public class PlayerControlls : MonoBehaviour
         {
             if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
             {
-                body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+                if (cosmicFloor)
+                {
+                    body.velocity += new Vector3(0f, 18.0f, 0f);
+                }
+                else
+                {
+                    body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
+                }
+                
                 animator.SetBool("IsJumping", true);
             }
             else if (IsGrounded())

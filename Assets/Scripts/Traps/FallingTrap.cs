@@ -2,51 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallingTrap : MonoBehaviour {
+public class FallingTrap : MonoBehaviour
+{
 
     private bool isActive;
-    private float startYPosition;
-    private float endYPosition;
-    private float speed = 8.5f;
-    PlayerControlls player;
+    private float speed = 9.0f;
 
 
     // Use this for initialization
-    void Start () {
-        do
-        {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControlls>();
-        }
-        while (player == null);
+    void Start()
+    {
         isActive = false;
-
-        startYPosition =(float)GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>()
-            .getUpperFloor().transform.position.y;
-        endYPosition = (float)GameObject.FindWithTag("LevelCreator").GetComponent<LevelCreator>()
-                                                   .actualFloor.transform.position.y;
-        transform.position = new Vector3(transform.position.x, startYPosition -1.3f, transform.position.z);
+        int lvlPassed = GameObject.FindWithTag("GameStatsCounter").GetComponent<GameStatsCounter>().levelsPassedCount;
+        transform.position = new Vector3(transform.position.x, transform.position.y + 10.0f - 3.7f, transform.position.z);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	    if (!isActive)
-	    {
-	        float playerX = player.transform.position.x;
-            if (((this.transform.position.x + 1.3f) >= playerX) &&
-                ((this.transform.position.x - 1.3f) <= playerX))
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!isActive)
+        {
+            float playerX = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.x;
+            float playerY = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.y;
+            if (this.transform.position.x + 1.3f >= playerX &&
+                this.transform.position.x - 1.3f <= playerX &&
+                this.transform.position.y - playerY <= 10.0f)
             {
                 this.isActive = true;
             }
-	    }
+        }
 
         if (isActive)
         {
             float step = speed * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y - step,
-            transform.position.z);
+                transform.position.z);
         }
 
-        if (transform.position.y < endYPosition +1.0f)
+        if (transform.position.y < 1.0f)
         {
             Destroy(transform.parent.gameObject);
             Destroy(gameObject);

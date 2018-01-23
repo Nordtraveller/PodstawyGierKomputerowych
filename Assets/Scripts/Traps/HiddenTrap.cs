@@ -18,7 +18,7 @@ public class HiddenTrap : MonoBehaviour
         m_renderAndPhysics = true;
         m_hidden = false;
         m_translateYStart = this.transform.position.y;
-        Debug.Log(m_translateYStart);
+//        Debug.Log(m_translateYStart);
         //m_translateYEnd = m_translateYStart + 0.5f;
     }
 

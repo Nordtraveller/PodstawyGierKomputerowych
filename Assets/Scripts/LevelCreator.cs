@@ -12,6 +12,14 @@ public class LevelCreator : MonoBehaviour
     public GameObject ui_text_floorUnlocked;
     public Slider ui_slider_timeLeft;
 
+	public Texture2D textureDefaultFloor;
+	public Texture2D textureFireFloor;
+	public Texture2D textureWindyFloor;
+	public Texture2D textureDarkFloor;
+	public Texture2D textureBouncyFloor;
+	public Texture2D textureChangingLightFloor;
+	public Texture2D textureCosmicFloor;
+
     private int exitTileNumber;
     private Floor newFloor;
     private Floor upperFloor;
@@ -33,8 +41,9 @@ public class LevelCreator : MonoBehaviour
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
 
-	private GameObject m_gameObjectPlane;
-	private GameObject m_gameObjectPlane2;
+	private GameObject m_backgroundCurrentFloor;
+	private GameObject m_backgroundNewFloor;
+	private bool   m_bFlip = true;
 
 	private float m_fCountdown = 3f;
 
@@ -47,8 +56,8 @@ public class LevelCreator : MonoBehaviour
 
 		audioSrc = GetComponent<AudioSource>();
 
-		m_gameObjectPlane = GameObject.Find ("backgroundTexture");
-		m_gameObjectPlane2 = GameObject.Find ("backgroundTexture2");
+		m_backgroundCurrentFloor = GameObject.Find ("backgroundTexture");
+		m_backgroundNewFloor = GameObject.Find ("backgroundTexture2");
 
     }
 
@@ -91,15 +100,23 @@ public class LevelCreator : MonoBehaviour
                 new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
 
 			// Background
-			Color tmp = m_gameObjectPlane.GetComponent<MeshRenderer> ().material.color;
-			tmp.a = (Time.time - startTime) / GameMetrics.dropDuration;
-			tmp.a = 1 - tmp.a;
-			m_gameObjectPlane.GetComponent<MeshRenderer> ().material.color = tmp;
+			//if (m_bFlip)
+			{
+				Color tmp = m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.color;
+				tmp.a = (Time.time - startTime) / GameMetrics.dropDuration;
+				tmp.a = 1 - tmp.a;
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.color = tmp;
 
-			Color tmp2 = m_gameObjectPlane2.GetComponent<MeshRenderer> ().material.color;
-			tmp2.a = (Time.time - startTime) / GameMetrics.dropDuration;
+				//Debug.Log ("Alpha" + tmp.a);
 
-			m_gameObjectPlane2.GetComponent<MeshRenderer> ().material.color = tmp2;
+				Color tmp2 = m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.color;
+				tmp2.a = (Time.time - startTime) / GameMetrics.dropDuration;
+
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.color = tmp2;
+
+			}
+
+
 
             if(playerTriggerDrop)
             {
@@ -225,50 +242,176 @@ public class LevelCreator : MonoBehaviour
 
     void CreateNewFloor()
     {
-        if(levelCounter.levelsPassedCount == unlockRate-1 && GameMetrics.floorsUnlocked < 3)
-        {
-            newFloor = Instantiate(floorPrefabList[2], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
-            this.transform.rotation, this.transform);
-            previousFloorIndex = 2;
-        }
-        else if (levelCounter.levelsPassedCount == (unlockRate * 2)-1 && GameMetrics.floorsUnlocked < 4)
-        {
-            newFloor = Instantiate(floorPrefabList[3], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
-           this.transform.rotation, this.transform);
-            previousFloorIndex = 3;
-        }
-        else if (levelCounter.levelsPassedCount == (unlockRate * 3)-1 && GameMetrics.floorsUnlocked < 5)
-        {
-            newFloor = Instantiate(floorPrefabList[4], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
-           this.transform.rotation, this.transform);
-            previousFloorIndex = 4;
-        }
-        else if (levelCounter.levelsPassedCount == (unlockRate * 4) - 1 && GameMetrics.floorsUnlocked < 6)
-        {
-            newFloor = Instantiate(floorPrefabList[5], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
-           this.transform.rotation, this.transform);
-            previousFloorIndex = 5;
-        }
-        else if (levelCounter.levelsPassedCount == (unlockRate * 5) - 1 && GameMetrics.floorsUnlocked < 7)
-        {
-            newFloor = Instantiate(floorPrefabList[6], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
-                this.transform.rotation, this.transform);
-            previousFloorIndex = 6;
-        }
-        else
-        {
-            int randomizedInt = previousFloorIndex;
-            while (randomizedInt == previousFloorIndex)
-            {
-                randomizedInt = Random.Range(0, GameMetrics.floorsUnlocked);
-            }
-            previousFloorIndex = randomizedInt;
-            newFloor = Instantiate(floorPrefabList[randomizedInt], new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
-           this.transform.rotation, this.transform);
-        }
-        newFloor.entranceTileNumber = exitTileNumber;
-        newFloor.CreateTiles();
-        exitTileNumber = newFloor.GetExitTileNumber();
+		Debug.Log ("start: previousFloorIndex = " + previousFloorIndex);
+		
+		switch (previousFloorIndex)
+		{
+		// default floor
+		case 0:
+			{
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDefaultFloor);
+				break;
+			}
+
+		// fire floor
+		case 1:
+			{
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
+				break;
+			}
+
+		// windy floor
+		case 2:
+			{
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureWindyFloor);
+				break;
+			}
+
+		// dark floor
+		case 3:
+			{
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDarkFloor);
+				break;
+			}
+
+		// bouncy floor
+		case 4:
+			{
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureBouncyFloor);
+				break;
+			}
+
+		// changing light/cosmos floor
+		case 5:
+		case 6:
+			{
+				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
+				break;
+			}
+		}
+
+
+		if (levelCounter.levelsPassedCount == unlockRate - 1 && GameMetrics.floorsUnlocked < 3) 
+		{
+				newFloor = Instantiate (floorPrefabList [2], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
+					this.transform.rotation, this.transform);
+				previousFloorIndex = 2;
+		}
+
+		else if (levelCounter.levelsPassedCount == (unlockRate * 2) - 1 && GameMetrics.floorsUnlocked < 4)
+		{
+				newFloor = Instantiate (floorPrefabList [3], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
+					this.transform.rotation, this.transform);
+				previousFloorIndex = 3;
+		}
+		else if (levelCounter.levelsPassedCount == (unlockRate * 3) - 1 && GameMetrics.floorsUnlocked < 5) 
+		{
+				newFloor = Instantiate (floorPrefabList [4], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
+					this.transform.rotation, this.transform);
+				previousFloorIndex = 4;
+		} 
+		else if (levelCounter.levelsPassedCount == (unlockRate * 4) - 1 && GameMetrics.floorsUnlocked < 6) 
+		{
+				newFloor = Instantiate (floorPrefabList [5], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
+					this.transform.rotation, this.transform);
+				previousFloorIndex = 5;
+		} 
+		else if (levelCounter.levelsPassedCount == (unlockRate * 5) - 1 && GameMetrics.floorsUnlocked < 7) 
+		{
+				newFloor = Instantiate (floorPrefabList [6], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
+					this.transform.rotation, this.transform);
+				previousFloorIndex = 6;
+		} 
+		else 
+		{
+			int randomizedInt = previousFloorIndex;
+			while (randomizedInt == previousFloorIndex)
+			{
+					randomizedInt = Random.Range (0, GameMetrics.floorsUnlocked);
+			}
+
+
+			previousFloorIndex = randomizedInt;
+
+			newFloor = Instantiate (floorPrefabList [randomizedInt], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
+					this.transform.rotation, this.transform);
+		}
+
+		newFloor.entranceTileNumber = exitTileNumber;
+		newFloor.CreateTiles ();
+		exitTileNumber = newFloor.GetExitTileNumber ();
+
+		Debug.Log ("koniec: previousFloorIndex = " + previousFloorIndex);
+
+
+
+		switch (previousFloorIndex) 
+		{
+		// default floor
+		case 0:
+			{
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDefaultFloor);
+				break;
+			}
+
+		// fire floor
+		case 1:
+			{
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
+				break;
+			}
+
+		// windy floor
+		case 2:
+			{
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureWindyFloor);
+			break;
+			}
+
+		// dark floor
+		case 3:
+			{
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDarkFloor);
+				break;
+			}
+
+		// bouncy floor
+		case 4:
+			{
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureBouncyFloor);
+				break;
+			}
+
+		// changing light/cosmos floor
+		case 5:
+		case 6:
+			{
+				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
+				break;
+			}
+
+			/*
+		default:
+			{
+				Debug.Log ("previousFloorIndex = " + previousFloorIndex);
+				break;
+			}
+			*/
+		}
+
+		m_bFlip = !m_bFlip;
+		if (m_bFlip)
+		{
+			m_backgroundCurrentFloor = GameObject.Find ("backgroundTexture");
+			m_backgroundNewFloor = GameObject.Find ("backgroundTexture2");
+		} 
+		else
+		{
+			m_backgroundCurrentFloor = GameObject.Find ("backgroundTexture2");
+			m_backgroundNewFloor = GameObject.Find ("backgroundTexture");
+		}
+
+
     }
 
     public void DropUpperFloor()

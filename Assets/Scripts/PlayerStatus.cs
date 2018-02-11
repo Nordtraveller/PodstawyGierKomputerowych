@@ -8,6 +8,7 @@ public class PlayerStatus : MonoBehaviour
     public bool hasExtraKey = false;
     public bool hasExtraTeleport = false;
 	public bool hasTrapDestroyer = false;
+    public FloorType actualFloorType = FloorType.Default;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -18,7 +19,6 @@ public class PlayerStatus : MonoBehaviour
 				Destroy (collision.gameObject);
 				hasTrapDestroyer = false;
 			} 
-
 			else 
 			{
 				Destroy (gameObject);
@@ -45,5 +45,4 @@ public class PlayerStatus : MonoBehaviour
 			hasTrapDestroyer = true;
 		}
     }
-
 }

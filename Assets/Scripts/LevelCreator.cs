@@ -126,7 +126,7 @@ public class LevelCreator : MonoBehaviour
             upperFloor.transform.position = Vector3.Lerp(new Vector3(0f, GameMetrics.upperFloorY, 0f),
                 Vector3.zero, (Time.time - startTime) / GameMetrics.dropDuration);
             actualFloor.transform.position = Vector3.Lerp(Vector3.zero,
-                new Vector3(0f, -GameMetrics.tileVerticalSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
+                new Vector3(0f, -GameMetrics.tileSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
 
 			// Background
 			{
@@ -158,7 +158,7 @@ public class LevelCreator : MonoBehaviour
 
             if(playerTriggerDrop)
             {
-                player.transform.position = new Vector3(actualFloor.GetExitTileNumber() * GameMetrics.tileHorizontalSize
+                player.transform.position = new Vector3(actualFloor.GetExitTileNumber() * GameMetrics.tileSize
                 , player.transform.position.y, 0.0f);
             }
 			if (upperFloor.transform.position.y == 0f) {
@@ -504,13 +504,6 @@ public class LevelCreator : MonoBehaviour
 		Debug.Log ("koniec: previousFloorIndex = " + previousFloorIndex);
 
 		m_bFlip = !m_bFlip;
-
-	
-		/*
-
-		*/
-
-
     }
 
     public void DropUpperFloor()

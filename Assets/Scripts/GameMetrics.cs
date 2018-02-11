@@ -4,12 +4,9 @@ using UnityEngine;
 
 public static class GameMetrics
 {
-    public static float gravity = 10.0f;
-
     #region Map
 
-    public static float tileHorizontalSize = 2f;
-    public static float tileVerticalSize = 1f;
+    public static float tileSize = 2f;
     public static int floorSize = 20;
     public static int numberofTrappedTiles = floorSize/2;
     public static float upperFloorY = 10f;
@@ -24,6 +21,7 @@ public static class GameMetrics
     public static float playerJumpForce = 13f;
     public static float playerRaycastDistance = 2f;
     public static int floorsUnlocked = 2;
+    public static float gravity = 10.0f;
 
     #endregion
 
@@ -39,7 +37,7 @@ public static class GameMetrics
     public static bool isTimer = true;
     public static bool isAbilities = true;
     public static bool isMiniMap = true;
-    public static bool islvlCount = true;
+    public static bool isLvlCount = true;
     public static bool isMute = false;
 
     #endregion

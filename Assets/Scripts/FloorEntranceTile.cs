@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorEntranceTile : MonoBehaviour
-{
+{ 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             PlayerStatus player = other.gameObject.GetComponent<PlayerStatus>();
+            player.actualFloorType = this.gameObject.GetComponentInParent<Floor>().floorType;
             if (player.haveKey)
             {
                 player.haveKey = false;

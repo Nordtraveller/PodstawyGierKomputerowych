@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FloorType
+{
+    Default, Fire, Windy, Bouncy, Dark, Blink, Cosmic 
+}
+
 public class Floor : MonoBehaviour
 {
-    public int floorSize;
+    public FloorType floorType;
     public int entranceTileNumber; //numer tile który ma być pusty żeby dało się wejść na piętro
     public float timeForFloor;
 
@@ -15,7 +20,6 @@ public class Floor : MonoBehaviour
 
     public GameObject tilePrefab;
     public Key [] keyPrefab;
-    public KeyIndicator[] KeyIndicatorPrefab;
     public PowerUp [] powerUpsPrefabs;
     public Trap[] trapsPrefabs;
 
@@ -26,30 +30,27 @@ public class Floor : MonoBehaviour
     private List<Trap> trapList;
     private List<PowerUp> powerUpList;
     private List<Key> keyList;
-    private List<KeyIndicator> keyIndicatorList;
     private List<int> tilesList;
 
 	private List<GameObject> tilesObjectsList;
 
     void Awake()
     {
-        floorSize = GameMetrics.floorSize;
         trapList = new List<Trap>();
         powerUpList = new List<PowerUp>();
         keyList = new List<Key>();
-        keyIndicatorList = new List<KeyIndicator>();
         tilesList = new List<int>();
 		tilesObjectsList = new List<GameObject> ();
     }
 
     public void CreateTiles()
     {
-        for (int i = 0; i < floorSize; i++)
+        for (int i = 0; i < GameMetrics.floorSize; i++)
         {
             if (i != entranceTileNumber)
             {
                 GameObject go = Instantiate(tilePrefab,
-                    new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f),
+                    new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f),
                     this.transform.rotation, this.transform);
 
 				tilesObjectsList.Add (go);
@@ -59,12 +60,11 @@ public class Floor : MonoBehaviour
             else
             {
                 Instantiate(transform.parent.GetComponent<LevelCreator>().entrancePrefab,
-                    new Vector3(i * GameMetrics.tileHorizontalSize, this.transform.position.y, 0f),
+                    new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f),
                     this.transform.rotation, this.transform);
             }
         }
         CreateExitTile();
-        CreateKeyIndicator();
         CreateKey();
         if (Random.Range(0, 100) > 50)
         {
@@ -80,10 +80,10 @@ public class Floor : MonoBehaviour
         {
             exitTileNumber = Random.Range(0, tilesList.Count);
         }
-        while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < floorSize / 3);
+        while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < GameMetrics.floorSize / 3);
         tilesList.RemoveAt(exitTileNumber);
         Instantiate(transform.parent.GetComponent<LevelCreator>().exitPrefab,
-            new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
+            new Vector3(exitTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
             this.transform.rotation, this.transform);
     }
 
@@ -96,17 +96,9 @@ public class Floor : MonoBehaviour
         while (keyTileNumber == entranceTileNumber || keyTileNumber == exitTileNumber);
         tilesList.RemoveAt(keyTileNumber);
         Key key = Instantiate(keyPrefab[0],
-            new Vector3(keyTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
+            new Vector3(keyTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
             this.transform.rotation, this.transform);
         keyList.Add(key);
-    }
-
-    private void CreateKeyIndicator()
-    {
-        KeyIndicator indicator = Instantiate(KeyIndicatorPrefab[0],
-            new Vector3(exitTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize + 1.0f, 0f),
-            this.transform.rotation, this.transform);
-        keyIndicatorList.Add(indicator);
     }
 
     private void CreateTraps()
@@ -134,7 +126,7 @@ public class Floor : MonoBehaviour
             while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber
             || trapTileNumber == powerUpTileNumber || CheckTrapPosition(trapTileNumber, prefab.size));
             Trap trap = Instantiate(prefab,
-                new Vector3(trapTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
+                new Vector3(trapTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
                 prefab.transform.rotation, this.transform);
             trapList.Add(trap);
             for (int a = 0; a < trap.size; a++)
@@ -156,7 +148,7 @@ public class Floor : MonoBehaviour
         tilesList.RemoveAt(powerUpTileNumber);
         int random = Random.Range(0, powerUpsPrefabs.Length);
         PowerUp powerUp = Instantiate(powerUpsPrefabs[random],
-            new Vector3(powerUpTileNumber * GameMetrics.tileHorizontalSize, this.transform.position.y + GameMetrics.tileHorizontalSize, 0f),
+            new Vector3(powerUpTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
             this.transform.rotation, this.transform);
         if (random == 2)
         {
@@ -168,7 +160,7 @@ public class Floor : MonoBehaviour
     private bool CheckTrapPosition(int tileNumber, int trapSize)
     {
         int position = tilesList.IndexOf(tileNumber);
-        if (tileNumber > (floorSize - trapSize)) return true;
+        if (tileNumber > (GameMetrics.floorSize - trapSize)) return true;
         if (position + trapSize > tilesList.Count) return true;
         if (entranceTileNumber == -1 && tileNumber == 0) return true;
 
@@ -224,21 +216,10 @@ public class Floor : MonoBehaviour
         keyList.RemoveAll(x => x == null);
     }
 
-    private void DestroyKeyIndicator()
-    {
-        keyIndicatorList.RemoveAll(x => x == null);
-        for (int i = 0; i < keyIndicatorList.Count; i++)
-        {
-            Destroy(keyIndicatorList[i].gameObject);
-        }
-        keyIndicatorList.RemoveAll(x => x == null);
-    }
-
     public void DestroyItemsOnFloor()
     {
         DestroyTraps();
         DestroyPowerUps();
         DestroyKey();
-        DestroyKeyIndicator();
     }
 }

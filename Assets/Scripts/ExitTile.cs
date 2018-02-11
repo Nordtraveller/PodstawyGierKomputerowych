@@ -26,12 +26,6 @@ public class ExitTile : MonoBehaviour
                 gameStatsCounter.levelsPassedCount += 1;
                 creator.playerTriggerDrop = true;
                 creator.DropUpperFloor();
-                playerControlls.fireFloor = false;
-                playerControlls.windyFloor = false;
-                playerControlls.bouncyFloor = false;
-                playerControlls.darkFloor = false;
-                playerControlls.changingLightFloor = false;
-                playerControlls.cosmicFloor = false;
                 this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
                 Destroy(this);
             }

@@ -41,8 +41,8 @@ public class Minimap : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		m_fGameObjectExitPosition = level.actualFloor.exitTileNumber * GameMetrics.tileHorizontalSize;
-		m_gameObjectKeyPosition = level.actualFloor.keyTileNumber * GameMetrics.tileHorizontalSize;
+		m_fGameObjectExitPosition = level.actualFloor.exitTileNumber * GameMetrics.tileSize;
+		m_gameObjectKeyPosition = level.actualFloor.keyTileNumber * GameMetrics.tileSize;
 
 		float fMinimapRectWidth = (m_minimapRectTransform.rect.width);
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloorEntranceTile : MonoBehaviour
+public class EntranceTile : MonoBehaviour
 { 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {

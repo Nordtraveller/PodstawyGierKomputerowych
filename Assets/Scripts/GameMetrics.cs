@@ -9,7 +9,7 @@ public static class GameMetrics
     public static float tileSize = 2f;
     public static int floorSize = 20;
     public static int numberofTrappedTiles = floorSize/2;
-    public static float upperFloorY = 10f;
+    public static float upperFloorY = 21f;
     public static float dropSpeed = 5f;
     public static float dropDuration = 1f;
 
@@ -22,6 +22,12 @@ public static class GameMetrics
     public static float playerRaycastDistance = 2f;
     public static int floorsUnlocked = 2;
     public static float gravity = 10.0f;
+
+    #endregion
+
+    #region Traps
+
+    public static float fallingTrapXOffset = 0.15f * upperFloorY;
 
     #endregion
 

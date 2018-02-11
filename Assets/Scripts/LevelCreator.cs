@@ -6,19 +6,12 @@ using UnityEngine.UI;
 public class LevelCreator : MonoBehaviour
 {
     public Floor[] floorPrefabList;
+    public Key keyPrefab;
     public ExitTile exitPrefab;
-    public FloorEntranceTile entrancePrefab;
+    public EntranceTile entrancePrefab;
     public Text ui_text_timeLeft;
     public GameObject ui_text_floorUnlocked;
     public Slider ui_slider_timeLeft;
-
-	public Texture2D textureDefaultFloor;
-	public Texture2D textureFireFloor;
-	public Texture2D textureWindyFloor;
-	public Texture2D textureDarkFloor;
-	public Texture2D textureBouncyFloor;
-	public Texture2D textureChangingLightFloor;
-	public Texture2D textureCosmicFloor;
 
     private int exitTileNumber;
     private Floor newFloor;
@@ -36,59 +29,37 @@ public class LevelCreator : MonoBehaviour
 
     private float timeDeltaOneSecondInterval = 0.0f;
 	private float timeToTen = 0.0f;
-    private int unlockRate = 5;
+    private int unlockRate = 2;
 
 	public AudioClip clockTickAudioClip;
 	private AudioSource audioSrc;
 
-	private GameObject m_backgroundCurrentFloor;
-	private GameObject m_backgroundNewFloor;
+	private GameObject floorBackground2;
+	private GameObject floorBackground1;
 	private bool   m_bFlip = false;
 
 	private float m_fCountdown = 3f;
 
     private void Awake()
     {
-		Debug.Log ("AWAKE!!!!");
+		floorBackground2 = GameObject.Find ("backgroundTextureOne");
+		floorBackground1 = GameObject.Find ("backgroundTextureTwo");
 
-		m_backgroundCurrentFloor = GameObject.Find ("backgroundTextureCurrent");
-		m_backgroundNewFloor = GameObject.Find ("backgroundTextureUpper");
+		Color tmp = floorBackground1.GetComponent<MeshRenderer> ().material.color;
+		tmp.a = 0;
+        floorBackground1.GetComponent<MeshRenderer> ().material.color = tmp;
 
-		// make sure only current floor background is visible
-		{
-			// A = 1.0 - fully visible
-			// A = 0.0 - not visible
-
-			// current floor with 1
-			Color tmp2 = m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.color;
-			tmp2.a = 1;
-
-			m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.color = tmp2;
-
-			// upper floor with 0
-			Color tmp = m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.color;
-			tmp.a = 0;
-
-			m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.color = tmp;
-
-
-		}
+        Color tmp2 = floorBackground2.GetComponent<MeshRenderer>().material.color;
+        tmp2.a = 1;
+        floorBackground2.GetComponent<MeshRenderer>().material.color = tmp2;
 	
-
-
         CreateFirstFloor();
         player = GameObject.Find("Player").GetComponent<PlayerControlls>();
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         levelCounter = GameObject.Find("GameStatsCounter").GetComponent<GameStatsCounter>();
 
 		audioSrc = GetComponent<AudioSource>();
-
-
-
-
-
     }
-
 
     private void Update()
     {
@@ -118,7 +89,6 @@ public class LevelCreator : MonoBehaviour
 			}            
         }
 
-
         if (!targetReached)
         {
             newFloor.transform.position = Vector3.Lerp(new Vector3(0f, 2 * GameMetrics.upperFloorY, 0f),
@@ -130,31 +100,21 @@ public class LevelCreator : MonoBehaviour
 
 			// Background
 			{
-				// zamienić wartości 0-1
 
-
-
-				Color tmp = m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.color;
+				Color tmp = floorBackground2.GetComponent<MeshRenderer> ().material.color;
 				tmp.a = (Time.time - startTime) / GameMetrics.dropDuration;
 				if (m_bFlip)
 					tmp.a = 1 - tmp.a;
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.color = tmp;
+				floorBackground2.GetComponent<MeshRenderer> ().material.color = tmp;
 
-
-				//Debug.Log ("TMP1" + tmp.a);
-
-				Color tmp2 = m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.color;
+				Color tmp2 = floorBackground1.GetComponent<MeshRenderer> ().material.color;
 				tmp2.a = (Time.time - startTime) / GameMetrics.dropDuration;
 				if (!m_bFlip)
 					tmp2.a = 1 - tmp2.a;
 
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.color = tmp2;
-				//Debug.Log ("TMP2" + tmp2.a);
-
+				floorBackground1.GetComponent<MeshRenderer> ().material.color = tmp2;
 
 			}
-
-
 
             if(playerTriggerDrop)
             {
@@ -167,15 +127,10 @@ public class LevelCreator : MonoBehaviour
 				if (previousFloor != null)
 					Destroy (previousFloor.gameObject);
 
-
-
 				// po pierwszych akcjach tutaj, currentFloor ma wartość A=0 (niewidoczny)
 				// a upperFloor ma wartość A = 1 (w pełni widoczny).
 				// 
 				// Teraz możemy załadować nową górną teksturę do currentFloor i zamienić flipy
-
-
-
 
 				previousFloor = actualFloor;
 				actualFloor = upperFloor;
@@ -184,61 +139,14 @@ public class LevelCreator : MonoBehaviour
 				ui_slider_timeLeft.maxValue = actualFloor.timeForFloor;
 				previousFloor.DestroyItemsOnFloor ();
 
-				//Debug.Log ("AAAAAXD");
-
 				GameObject go;
 				if (m_bFlip) {
-					go = m_backgroundCurrentFloor;
+					go = floorBackground2;
 				} else
-					go = m_backgroundNewFloor;
+					go = floorBackground1;
 
-				switch (previousFloorIndex) {
-				// default floor
-				case 0:
-					{
-						go.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDefaultFloor);
-						break;
-					}
-
-				// fire floor
-				case 1:
-					{
-						go.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
-						break;
-					}
-
-				// windy floor
-				case 2:
-					{
-						go.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureWindyFloor);
-						break;
-					}
-
-				// dark floor
-				case 3:
-					{
-						go.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDarkFloor);
-						break;
-					}
-
-				// bouncy floor
-				case 4:
-					{
-						go.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureBouncyFloor);
-						break;
-					}
-
-				// changing light/cosmos floor
-				case 5:
-				case 6:
-					{
-						go.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
-						break;
-					}
-				}
+                go.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", upperFloor.backgroundTexture);
 			}
-
-
 
 			timeToTen = 0.0f;
         }
@@ -278,15 +186,12 @@ public class LevelCreator : MonoBehaviour
 
 					Vector3 oldPos = new Vector3 (tile.transform.position.x, tile.transform.position.y, tile.transform.position.z);
 
-					//oldPos.x += param;
 					oldPos.y += offsetY;
 
 					tile.transform.position = oldPos;
-
 				}
 			}
-
-			
+		
 			ui_text_timeLeft.text = "Time Left: " + nTimeLeft.ToString();
             ui_slider_timeLeft.value = timeLeft;
 
@@ -316,56 +221,8 @@ public class LevelCreator : MonoBehaviour
         upperFloor.CreateTiles();
         exitTileNumber = upperFloor.GetExitTileNumber();
 
-
-		m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDefaultFloor);
-
-		switch (nextFloorIndex) {
-		// default floor
-		case 0:
-			{
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDefaultFloor);
-				break;
-			}
-
-		// fire floor
-		case 1:
-			{
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
-				break;
-			}
-
-		// windy floor
-		case 2:
-			{
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureWindyFloor);
-				break;
-			}
-
-		// dark floor
-		case 3:
-			{
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDarkFloor);
-				break;
-			}
-
-		// bouncy floor
-		case 4:
-			{
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureBouncyFloor);
-				break;
-			}
-
-		// changing light/cosmos floor
-		case 5:
-		case 6:
-			{
-				m_backgroundNewFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
-				break;
-			}
-		}
-
-
-
+		floorBackground2.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", actualFloor.backgroundTexture);
+        floorBackground1.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", upperFloor.backgroundTexture);
     }
 
     void UnlockFloors()
@@ -399,58 +256,6 @@ public class LevelCreator : MonoBehaviour
 
     void CreateNewFloor()
     {
-		//Debug.Log ("start: previousFloorIndex = " + previousFloorIndex);
-		/*
-		switch (previousFloorIndex)
-		{
-		// default floor
-		case 0:
-			{
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDefaultFloor);
-				break;
-			}
-
-		// fire floor
-		case 1:
-			{
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
-				break;
-			}
-
-		// windy floor
-		case 2:
-			{
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureWindyFloor);
-				break;
-			}
-
-		// dark floor
-		case 3:
-			{
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureDarkFloor);
-				break;
-			}
-
-		// bouncy floor
-		case 4:
-			{
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureBouncyFloor);
-				break;
-			}
-
-		// changing light/cosmos floor
-		case 5:
-		case 6:
-			{
-				m_backgroundCurrentFloor.GetComponent<MeshRenderer> ().material.SetTexture ("_MainTex", textureFireFloor);
-				break;
-			}
-		}
-		*/
-
-		// z górnego na aktualne
-
-
 		if (levelCounter.levelsPassedCount == unlockRate - 1 && GameMetrics.floorsUnlocked < 3) 
 		{
 				newFloor = Instantiate (floorPrefabList [2], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
@@ -490,7 +295,6 @@ public class LevelCreator : MonoBehaviour
 					randomizedInt = Random.Range (0, GameMetrics.floorsUnlocked);
 			}
 
-
 			previousFloorIndex = randomizedInt;
 
 			newFloor = Instantiate (floorPrefabList [randomizedInt], new Vector3 (0f, 2 * GameMetrics.upperFloorY, 0f),
@@ -515,19 +319,13 @@ public class LevelCreator : MonoBehaviour
 		for (int i = 0; i < size; i++) {
 			GameObject tile = upperFloor.GetTilesObjectList () [i];
 
-			//float param = (timeToTen / 100.0f);
-			//float offsetY = param * Mathf.Sin (timeToTen * 10.14f);
-
 			Vector3 oldPos = new Vector3 (tile.transform.localPosition.x, tile.transform.localPosition.y, tile.transform.localPosition.z);
 		
-			//oldPos.x += param;
 			oldPos.y = 0;
 
 			tile.transform.localPosition = oldPos;
 
 		}
-
-
         startTime = Time.time;
         targetReached = false;
     }
@@ -539,7 +337,6 @@ public class LevelCreator : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         ui_text_floorUnlocked.SetActive(false);
     }
-
 
     public Floor getUpperFloor()
     {

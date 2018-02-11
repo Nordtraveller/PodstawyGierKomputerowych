@@ -15,7 +15,7 @@ public class ExitTile : MonoBehaviour
         gameStatsCounter = GameObject.FindGameObjectWithTag("GameStatsCounter").GetComponent<GameStatsCounter>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
@@ -26,11 +26,8 @@ public class ExitTile : MonoBehaviour
                 gameStatsCounter.levelsPassedCount += 1;
                 creator.playerTriggerDrop = true;
                 creator.DropUpperFloor();
-                this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
                 Destroy(this);
             }
-
         }
     }
-
 }

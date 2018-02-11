@@ -12,6 +12,11 @@ public class Floor : MonoBehaviour
     public FloorType floorType;
     public int entranceTileNumber; //numer tile który ma być pusty żeby dało się wejść na piętro
     public float timeForFloor;
+    public int exitTileNumber;
+    public int keyTileNumber;
+    public int powerUpTileNumber;
+
+    public Texture2D backgroundTexture;
 
 	public List<GameObject> GetTilesObjectList()
 	{
@@ -19,26 +24,21 @@ public class Floor : MonoBehaviour
 	}
 
     public GameObject tilePrefab;
-    public Key [] keyPrefab;
     public PowerUp [] powerUpsPrefabs;
     public Trap[] trapsPrefabs;
 
-
-    public int exitTileNumber;
-    public int keyTileNumber;
-    public int powerUpTileNumber;
+    private LevelCreator levelCreator;
     private List<Trap> trapList;
     private List<PowerUp> powerUpList;
-    private List<Key> keyList;
+    private Key key;
     private List<int> tilesList;
-
 	private List<GameObject> tilesObjectsList;
 
     void Awake()
     {
+        levelCreator = this.gameObject.GetComponentInParent<LevelCreator>();
         trapList = new List<Trap>();
         powerUpList = new List<PowerUp>();
-        keyList = new List<Key>();
         tilesList = new List<int>();
 		tilesObjectsList = new List<GameObject> ();
     }
@@ -49,18 +49,15 @@ public class Floor : MonoBehaviour
         {
             if (i != entranceTileNumber)
             {
-                GameObject go = Instantiate(tilePrefab,
-                    new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f),
+                GameObject go = Instantiate(tilePrefab, new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f),
                     this.transform.rotation, this.transform);
 
 				tilesObjectsList.Add (go);
-
                 tilesList.Add(i);
             }
             else
             {
-                Instantiate(transform.parent.GetComponent<LevelCreator>().entrancePrefab,
-                    new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f),
+                Instantiate(levelCreator.entrancePrefab, new Vector3(i * GameMetrics.tileSize, this.transform.position.y, 0f),
                     this.transform.rotation, this.transform);
             }
         }
@@ -82,8 +79,7 @@ public class Floor : MonoBehaviour
         }
         while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < GameMetrics.floorSize / 3);
         tilesList.RemoveAt(exitTileNumber);
-        Instantiate(transform.parent.GetComponent<LevelCreator>().exitPrefab,
-            new Vector3(exitTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
+        Instantiate(levelCreator.exitPrefab, new Vector3(exitTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
             this.transform.rotation, this.transform);
     }
 
@@ -95,10 +91,8 @@ public class Floor : MonoBehaviour
         }
         while (keyTileNumber == entranceTileNumber || keyTileNumber == exitTileNumber);
         tilesList.RemoveAt(keyTileNumber);
-        Key key = Instantiate(keyPrefab[0],
-            new Vector3(keyTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
+        key = Instantiate(levelCreator.keyPrefab, new Vector3(keyTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
             this.transform.rotation, this.transform);
-        keyList.Add(key);
     }
 
     private void CreateTraps()
@@ -125,8 +119,7 @@ public class Floor : MonoBehaviour
             }
             while (trapTileNumber == entranceTileNumber || trapTileNumber == exitTileNumber || trapTileNumber == keyTileNumber
             || trapTileNumber == powerUpTileNumber || CheckTrapPosition(trapTileNumber, prefab.size));
-            Trap trap = Instantiate(prefab,
-                new Vector3(trapTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
+            Trap trap = Instantiate(prefab, new Vector3(trapTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
                 prefab.transform.rotation, this.transform);
             trapList.Add(trap);
             for (int a = 0; a < trap.size; a++)
@@ -147,8 +140,7 @@ public class Floor : MonoBehaviour
         while (powerUpTileNumber == entranceTileNumber || powerUpTileNumber == exitTileNumber || powerUpTileNumber == keyTileNumber);
         tilesList.RemoveAt(powerUpTileNumber);
         int random = Random.Range(0, powerUpsPrefabs.Length);
-        PowerUp powerUp = Instantiate(powerUpsPrefabs[random],
-            new Vector3(powerUpTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
+        PowerUp powerUp = Instantiate(powerUpsPrefabs[random], new Vector3(powerUpTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
             this.transform.rotation, this.transform);
         if (random == 2)
         {
@@ -163,7 +155,6 @@ public class Floor : MonoBehaviour
         if (tileNumber > (GameMetrics.floorSize - trapSize)) return true;
         if (position + trapSize > tilesList.Count) return true;
         if (entranceTileNumber == -1 && tileNumber == 0) return true;
-
 
         for (int a = 0; a < trapSize; a++)
         {
@@ -208,12 +199,7 @@ public class Floor : MonoBehaviour
 
     private void DestroyKey()
     {
-        keyList.RemoveAll(x => x == null);
-        for (int i = 0; i < keyList.Count; i++)
-        {
-            Destroy(keyList[i].gameObject);
-        }
-        keyList.RemoveAll(x => x == null);
+        if(key != null) Destroy(key.gameObject);
     }
 
     public void DestroyItemsOnFloor()

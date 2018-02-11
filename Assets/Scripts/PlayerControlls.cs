@@ -40,8 +40,6 @@ public class PlayerControlls : MonoBehaviour
             previousTime = newTime;
             directionalLight = !directionalLight;
         }
-        Vector3 position = transform.position;
-        pointLight.transform.position = new Vector3(position.x + 1.0f, position.y, position.z);
 
         switch(playerStatus.actualFloorType) //move case
         {
@@ -102,6 +100,7 @@ public class PlayerControlls : MonoBehaviour
         }
         MovePlayer(direction, jumpForce);
 
+        Vector3 position = transform.position;
         //special keys
         if (Input.GetKeyDown(KeyCode.Q) && playerStatus.hasExtraKey)
         {

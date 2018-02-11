@@ -4,29 +4,26 @@ using UnityEngine;
 
 public class FallingTrap : MonoBehaviour
 {
-
     private bool isActive;
     private float speed = 9.0f;
+    private GameObject player;
 
-
-    // Use this for initialization
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         isActive = false;
-        int lvlPassed = GameObject.FindWithTag("GameStatsCounter").GetComponent<GameStatsCounter>().levelsPassedCount;
-        transform.position = new Vector3(transform.position.x, transform.position.y + 10.0f - 3.7f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y + GameMetrics.upperFloorY - 4.0f, transform.position.z);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!isActive)
         {
-            float playerX = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.x;
-            float playerY = GameObject.FindWithTag("Player").GetComponent<PlayerControlls>().transform.position.y;
-            if (this.transform.position.x + 1.3f >= playerX &&
-                this.transform.position.x - 1.3f <= playerX &&
-                this.transform.position.y - playerY <= 10.0f)
+            float playerX = player.transform.position.x;
+            float playerY = player.transform.position.y;
+            if (this.transform.position.x + GameMetrics.fallingTrapXOffset >= playerX &&
+                this.transform.position.x - GameMetrics.fallingTrapXOffset <= playerX &&
+                this.transform.position.y - playerY <= GameMetrics.upperFloorY)
             {
                 this.isActive = true;
             }
@@ -35,8 +32,7 @@ public class FallingTrap : MonoBehaviour
         if (isActive)
         {
             float step = speed * Time.deltaTime;
-            transform.position = new Vector3(transform.position.x, transform.position.y - step,
-                transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y - step, transform.position.z);
         }
 
         if (transform.position.y < 1.0f)

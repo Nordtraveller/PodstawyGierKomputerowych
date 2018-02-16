@@ -40,7 +40,7 @@ public class PlayerStatus : MonoBehaviour
         {
             hasExtraTeleport = true;
 		}
-		if (other.tag == "powerupTrapDestroyer")
+		if (other.tag == "TrapResist")
 		{
 			hasTrapDestroyer = true;
 		}

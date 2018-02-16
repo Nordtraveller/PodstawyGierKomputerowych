@@ -6,7 +6,6 @@ public class PlayerControlls : MonoBehaviour
 {
     private Rigidbody2D body;
     private float distanceToGround;
-    private RaycastHit2D hit;
     private float direction = 0;
     private float jumpForce = 0;
     private PlayerStatus playerStatus;
@@ -133,7 +132,11 @@ public class PlayerControlls : MonoBehaviour
 
     bool IsGrounded()
     {
-        hit = Physics2D.Raycast(body.transform.position, Vector2.down, distanceToGround + 0.1f, groundLayer);
-        return (hit.transform.tag == "Ground");
+        RaycastHit2D hit = Physics2D.Raycast(body.transform.position, Vector2.down, distanceToGround + 0.01f, groundLayer);
+        if (hit.collider != null && hit.collider.isTrigger == false)
+        {
+            return (hit.transform.tag == "Ground");
+        }
+        return false;
     }
 }

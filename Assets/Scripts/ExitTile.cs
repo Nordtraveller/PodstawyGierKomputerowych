@@ -26,7 +26,7 @@ public class ExitTile : MonoBehaviour
                 gameStatsCounter.levelsPassedCount += 1;
                 creator.playerTriggerDrop = true;
                 creator.DropUpperFloor();
-                Destroy(this);
+                Destroy(this.gameObject);
             }
         }
     }

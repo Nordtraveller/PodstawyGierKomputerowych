@@ -7,7 +7,7 @@ public class LevelCreator : MonoBehaviour
 {
     public Floor[] floorPrefabList;
     public Key keyPrefab;
-    public ExitTile exitPrefab;
+    public GameObject exitPrefab;
     public EntranceTile entrancePrefab;
     public Text ui_text_timeLeft;
     public GameObject ui_text_floorUnlocked;

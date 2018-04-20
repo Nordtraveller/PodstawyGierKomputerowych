@@ -8,6 +8,9 @@ public class ExitTile : MonoBehaviour
     private PlayerStatus player;
     private PlayerControlls playerControlls;
     private GameStatsCounter gameStatsCounter;
+    private Vector3 tilePosition;
+
+    private bool floorDrop = false;
 
     private void Awake()
     {
@@ -23,11 +26,22 @@ public class ExitTile : MonoBehaviour
             PlayerControlls playerControlls = other.gameObject.GetComponent<PlayerControlls>();
             if (player.haveKey == true)
             {
+                tilePosition = this.gameObject.transform.parent.position;
                 gameStatsCounter.levelsPassedCount += 1;
                 creator.playerTriggerDrop = true;
+                floorDrop = true;
                 creator.DropUpperFloor();
-                Destroy(this.gameObject);
+                Destroy(this.gameObject.GetComponent<Collider2D>());
             }
+        }
+    }
+
+    private void Update()
+    {
+        if(floorDrop)
+        {
+            this.gameObject.transform.parent.position =  Vector3.Lerp(tilePosition,
+                new Vector3(tilePosition.x, 0f, tilePosition.z), GameMetrics.dropDuration);
         }
     }
 }

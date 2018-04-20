@@ -79,7 +79,7 @@ public class Floor : MonoBehaviour
         }
         while (exitTileNumber == entranceTileNumber || Mathf.Abs(exitTileNumber - entranceTileNumber) < GameMetrics.floorSize / 3);
         tilesList.RemoveAt(exitTileNumber);
-        Instantiate(levelCreator.exitPrefab, new Vector3(exitTileNumber * GameMetrics.tileSize, this.transform.position.y + GameMetrics.tileSize, 0f),
+        Instantiate(levelCreator.exitPrefab, new Vector3(exitTileNumber * GameMetrics.tileSize, this.transform.position.y, 0f),
             this.transform.rotation, this.transform);
     }
 

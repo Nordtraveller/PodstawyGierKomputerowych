@@ -8,8 +8,9 @@ public class PlayerStatus : MonoBehaviour
     public bool hasExtraKey = false;
     public bool hasExtraTeleport = false;
 	public bool hasTrapDestroyer = false;
+    public FloorType actualFloorType = FloorType.Default;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.collider.tag == "Trap")
         {
@@ -18,7 +19,6 @@ public class PlayerStatus : MonoBehaviour
 				Destroy (collision.gameObject);
 				hasTrapDestroyer = false;
 			} 
-
 			else 
 			{
 				Destroy (gameObject);
@@ -26,7 +26,7 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Key")
         {
@@ -40,10 +40,9 @@ public class PlayerStatus : MonoBehaviour
         {
             hasExtraTeleport = true;
 		}
-		if (other.tag == "powerupTrapDestroyer")
+		if (other.tag == "TrapResist")
 		{
 			hasTrapDestroyer = true;
 		}
     }
-
 }

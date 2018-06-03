@@ -8,6 +8,9 @@ public class ExitTile : MonoBehaviour
     private PlayerStatus player;
     private PlayerControlls playerControlls;
     private GameStatsCounter gameStatsCounter;
+    private Vector3 tilePosition;
+
+    private bool floorDrop = false;
 
     private void Awake()
     {
@@ -15,7 +18,7 @@ public class ExitTile : MonoBehaviour
         gameStatsCounter = GameObject.FindGameObjectWithTag("GameStatsCounter").GetComponent<GameStatsCounter>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
@@ -23,20 +26,22 @@ public class ExitTile : MonoBehaviour
             PlayerControlls playerControlls = other.gameObject.GetComponent<PlayerControlls>();
             if (player.haveKey == true)
             {
+                tilePosition = this.gameObject.transform.parent.position;
                 gameStatsCounter.levelsPassedCount += 1;
                 creator.playerTriggerDrop = true;
+                floorDrop = true;
                 creator.DropUpperFloor();
-                playerControlls.fireFloor = false;
-                playerControlls.windyFloor = false;
-                playerControlls.bouncyFloor = false;
-                playerControlls.darkFloor = false;
-                playerControlls.changingLightFloor = false;
-                playerControlls.cosmicFloor = false;
-                this.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
-                Destroy(this);
+                Destroy(this.gameObject.GetComponent<Collider2D>());
             }
-
         }
     }
 
+    private void Update()
+    {
+        if(floorDrop)
+        {
+            this.gameObject.transform.parent.position =  Vector3.Lerp(tilePosition,
+                new Vector3(tilePosition.x, 0f, tilePosition.z), GameMetrics.dropDuration);
+        }
+    }
 }

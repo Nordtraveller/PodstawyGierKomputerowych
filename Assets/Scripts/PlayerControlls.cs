@@ -4,29 +4,24 @@ using UnityEngine;
 
 public class PlayerControlls : MonoBehaviour
 {
-    private Rigidbody body;
+    private Rigidbody2D body;
     private float distanceToGround;
-    private RaycastHit hit;
     private float direction = 0;
+    private float jumpForce = 0;
     private PlayerStatus playerStatus;
     private LevelCreator level;
-    private Animator animator;
+    public LayerMask groundLayer;
 
     public Light dirLight;
     public Light pointLight;
-    public bool fireFloor = false;
-    public bool bouncyFloor = false;
-    public bool windyFloor = false;
-    public bool darkFloor = false;
-    public bool cosmicFloor = false;
-    public bool changingLightFloor = false;
     private float jumpDelay = 0.02f;
     private float previousTime = 0f;
     private float newTime = 0f;
     private bool directionalLight = false;
+    private Animator animator;
+    private SpriteRenderer spriteRender;
 
     public GameObject shield;
-
 
     void Start ()
     {
@@ -34,9 +29,10 @@ public class PlayerControlls : MonoBehaviour
         playerStatus = GameObject.Find("Player").GetComponent<PlayerStatus>();
         dirLight = GameObject.FindWithTag("Directional light").GetComponent<Light>();
         pointLight = GameObject.FindWithTag("Point light").GetComponent<Light>();
-        body = GetComponentInChildren<Rigidbody>();
-        distanceToGround = GetComponentInChildren<CapsuleCollider>().bounds.extents.y;
+        body = GetComponentInChildren<Rigidbody2D>();
+        distanceToGround = GetComponentInChildren<CapsuleCollider2D>().bounds.extents.y;
         animator = GetComponentInChildren<Animator>();
+        spriteRender = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Update ()
@@ -47,117 +43,94 @@ public class PlayerControlls : MonoBehaviour
             previousTime = newTime;
             directionalLight = !directionalLight;
         }
+
+        switch(playerStatus.actualFloorType) //move case
+        {
+            case FloorType.Fire:
+                if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
+                if (Input.GetAxis("Horizontal") > 0) direction = 0.8f;
+                break;
+
+            case FloorType.Windy:
+                direction = Input.GetAxis("Horizontal") - 0.3f;
+                break;
+
+            default:
+                direction = Input.GetAxis("Horizontal");
+                break;
+        }
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            animator.SetBool("IsPlayerMoving", true);
+            if (Input.GetAxis("Horizontal") > 0)
+            {
+                spriteRender.flipX = false;
+            }
+            else if (Input.GetAxis("Horizontal") < 0)
+            {
+                spriteRender.flipX = true;
+            }
+        }
+        else
+        {
+            animator.SetBool("IsPlayerMoving", false);
+        }
+        switch (playerStatus.actualFloorType) //light case
+        {
+            case FloorType.Dark:
+                dirLight.enabled = false;
+                pointLight.enabled = true;
+                break;
+
+            case FloorType.Blink:
+                dirLight.enabled = directionalLight;
+                break;
+
+            default:
+                dirLight.enabled = true;
+                pointLight.enabled = false;
+                break;
+        }
+        jumpForce = 0.0f;
+        switch (playerStatus.actualFloorType) //jump case
+        {
+            case FloorType.Bouncy:
+                jumpDelay -= Time.deltaTime;
+                if (IsGrounded() && jumpDelay < 0)
+                {
+                    jumpDelay = 0.02f;
+                    jumpForce = GameMetrics.playerJumpForce;
+                }
+                break;
+
+            case FloorType.Cosmic:
+                if (Input.GetButtonDown("Jump") && IsGrounded())
+                {
+                    jumpForce = GameMetrics.playerJumpForce * 1.4f;
+                }
+                break;
+
+            default:
+                if (Input.GetButtonDown("Jump") && IsGrounded())
+                {
+                    jumpForce = GameMetrics.playerJumpForce;
+                }
+                break;
+        }
+        MovePlayer(direction, jumpForce);
+
         Vector3 position = transform.position;
-        pointLight.transform.position = new Vector3(position.x + 1.0f, position.y, position.z);
-
-        if (fireFloor)
-        {
-            if (Input.GetAxis("Horizontal") < 0) direction = -0.8f;
-            if (Input.GetAxis("Horizontal") > 0) direction = 0.8f;
-            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
-        }
-        else if (windyFloor)
-        {
-            direction = -0.3f;
-            position.x += direction * Time.deltaTime * GameMetrics.playerSpeed  
-                           + Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
-        }      
-        else
-        {
-            position.x += Input.GetAxis("Horizontal") * Time.deltaTime * GameMetrics.playerSpeed;
-        }
-        if (Input.GetAxis("Horizontal") < 0)
-        {
-            animator.SetBool("IsMoveLeft", true);
-            animator.SetBool("IsMoveRight", false);
-            //animator.SetBool("IsFacingLeft", true);
-            //animator.SetBool("IsFacingRight", false);
-        }
-        else if (Input.GetAxis("Horizontal") > 0)
-        {
-            animator.SetBool("IsMoveLeft", false);
-            animator.SetBool("IsMoveRight", true);
-            //animator.SetBool("IsFacingLeft", false);
-            //animator.SetBool("IsFacingRight", true);
-        }
-        else if(!fireFloor)
-        {
-            animator.SetBool("IsMoveLeft", false);
-            animator.SetBool("IsMoveRight", false);
-        }
-        transform.position = position;
-
-
-        if (level.getUpperFloor().tilePrefab.name == "DarkTile" && level.getUpperFloor().transform.position.y <= 3.0f)
-        {
-            darkFloor = true;
-        }
-        if (darkFloor)
-        {
-            dirLight.enabled = false;
-            pointLight.enabled = true;
-        }
-        if (!darkFloor)
-        {
-            dirLight.enabled = true;
-            pointLight.enabled = false;
-        }
-
-        if(changingLightFloor)
-        {
-            dirLight.enabled = directionalLight;
-        }
-
-        jumpDelay -= Time.deltaTime;
-        if(bouncyFloor)
-        {
-            if (IsGrounded() && jumpDelay < 0)
-            {
-                jumpDelay = 0.02f;
-                body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
-                animator.SetBool("IsJumping", true);
-            }
-        }
-        else
-        {
-            if (Input.GetButtonDown("Jump") && IsGrounded() && !bouncyFloor)
-            {
-                if (cosmicFloor)
-                {
-                    body.velocity += new Vector3(0f, 18.0f, 0f);
-                }
-                else
-                {
-                    body.velocity += new Vector3(0f, GameMetrics.playerJumpForce, 0f);
-                }
-                
-                animator.SetBool("IsJumping", true);
-            }
-            else if (IsGrounded())
-            {
-                animator.SetBool("IsJumping", false);
-            }
-        }
-
         //special keys
         if (Input.GetKeyDown(KeyCode.Q) && playerStatus.hasExtraKey)
         {
             playerStatus.haveKey = true;
             playerStatus.hasExtraKey = false;
         }
-
         if (Input.GetKeyDown(KeyCode.W) && playerStatus.hasExtraTeleport)
         {            
-            transform.position = new Vector3(level.actualFloor.exitTileNumber * 2, position.y, position.z); 
+            transform.position = new Vector3(level.actualFloor.exitTileNumber * GameMetrics.tileSize, position.y + GameMetrics.tileSize, position.z); 
             playerStatus.hasExtraTeleport = false;
         }
-
-		if (Input.GetKeyDown (KeyCode.E) && playerStatus.hasTrapDestroyer) 
-		{
-			
-		}
-
-        //shield
         if (playerStatus.hasTrapDestroyer)
         {
             shield.SetActive(true);
@@ -169,10 +142,21 @@ public class PlayerControlls : MonoBehaviour
         }
     }
 
-
+    void MovePlayer(float direction, float jumpForce)
+    {
+        Vector3 position = transform.position;
+        position.x += direction * Time.deltaTime * GameMetrics.playerSpeed;
+        transform.position = position;
+        body.velocity += new Vector2(0f, jumpForce);
+    }
 
     bool IsGrounded()
     {
-        return (Physics.Raycast(body.transform.position, Vector3.down, out hit, distanceToGround + 0.1f) && hit.transform.tag == "Ground");
+        RaycastHit2D hit = Physics2D.Raycast(body.transform.position, Vector2.down, distanceToGround + 0.01f, groundLayer);
+        if (hit.collider != null && hit.collider.isTrigger == false)
+        {
+            return (hit.transform.tag == "Ground");
+        }
+        return false;
     }
 }

@@ -19,7 +19,7 @@ public class MovingTrap : MonoBehaviour
     void Update()
     {
             Vector3 pointA = new Vector3(startingX, this.transform.position.y, this.transform.position.z);
-            Vector3 pointB = pointA + new Vector3((GetComponentInParent<Trap>().size - GameMetrics.tileHorizontalSize), 0, 0);
+            Vector3 pointB = pointA + new Vector3((GetComponentInParent<Trap>().size - GameMetrics.tileSize), 0, 0);
             float pingPong = Mathf.PingPong(Time.time * speed, 1);
             this.transform.position = Vector3.Lerp(pointA, pointB, pingPong);
             this.transform.Rotate(new Vector3(30.0f * Time.deltaTime, 0.0f, 0.0f));

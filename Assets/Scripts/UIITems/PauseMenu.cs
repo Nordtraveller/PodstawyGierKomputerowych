@@ -124,8 +124,8 @@ public class PauseMenu : MonoBehaviour {
 
     public void lvlCountDisplayChangeStatus()
     {
-        GameMetrics.islvlCount = !GameMetrics.islvlCount;
-        HUDElements[3].SetActive(GameMetrics.islvlCount);
+        GameMetrics.isLvlCount = !GameMetrics.isLvlCount;
+        HUDElements[3].SetActive(GameMetrics.isLvlCount);
         setColorsHUD();
     }
 
@@ -207,7 +207,7 @@ public class PauseMenu : MonoBehaviour {
         HUDElements[0].SetActive(GameMetrics.isTimer);
         HUDElements[1].SetActive(GameMetrics.isAbilities);
         HUDElements[2].SetActive(GameMetrics.isMiniMap);
-        HUDElements[3].SetActive(GameMetrics.islvlCount);
+        HUDElements[3].SetActive(GameMetrics.isLvlCount);
         Sounds.mute = GameMetrics.isMute;
     }
 }

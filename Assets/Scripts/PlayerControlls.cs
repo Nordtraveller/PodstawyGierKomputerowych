@@ -18,6 +18,8 @@ public class PlayerControlls : MonoBehaviour
     private float previousTime = 0f;
     private float newTime = 0f;
     private bool directionalLight = false;
+    private Animator animator;
+    private SpriteRenderer spriteRender;
 
     public GameObject shield;
 
@@ -29,6 +31,8 @@ public class PlayerControlls : MonoBehaviour
         pointLight = GameObject.FindWithTag("Point light").GetComponent<Light>();
         body = GetComponentInChildren<Rigidbody2D>();
         distanceToGround = GetComponentInChildren<CapsuleCollider2D>().bounds.extents.y;
+        animator = GetComponentInChildren<Animator>();
+        spriteRender = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Update ()
@@ -55,7 +59,23 @@ public class PlayerControlls : MonoBehaviour
                 direction = Input.GetAxis("Horizontal");
                 break;
         }
-        switch(playerStatus.actualFloorType) //light case
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            animator.SetBool("IsPlayerMoving", true);
+            if (Input.GetAxis("Horizontal") > 0)
+            {
+                spriteRender.flipX = false;
+            }
+            else if (Input.GetAxis("Horizontal") < 0)
+            {
+                spriteRender.flipX = true;
+            }
+        }
+        else
+        {
+            animator.SetBool("IsPlayerMoving", false);
+        }
+        switch (playerStatus.actualFloorType) //light case
         {
             case FloorType.Dark:
                 dirLight.enabled = false;

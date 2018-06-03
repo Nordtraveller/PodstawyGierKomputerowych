@@ -31,10 +31,6 @@ public class HiddenTrap : MonoBehaviour
         }
         if (m_translateYStart == 2.0f)
         {
-            //this.transform.Rotate(new Vector3(0.0f, 60.0f * Time.deltaTime, 0.0f));
-            this.transform.Rotate(new Vector3(0.0f, 0.0f, 60.0f * Time.deltaTime));
-
-
             m_timePassed += Time.deltaTime;
 
             float t = (3.0f - m_timePassed) / 3.0f;
@@ -43,12 +39,6 @@ public class HiddenTrap : MonoBehaviour
             if (m_timePassed >= 3.0f)
             {
                 m_timePassed = 0.0f;
-
-                //var playerCollider = GameObject.Find("Player").GetComponent<Collider>();
-                //var trapCollider = GetComponentInParent<Collider>();	
-                //Physics.IgnoreCollision (playerCollider, trapCollider, !m_renderAndPhysics );
-
-                //GetComponent<Renderer> ().enabled = m_renderAndPhysics;
 
                 m_renderAndPhysics = !m_renderAndPhysics;
                 m_hidden = !m_hidden;

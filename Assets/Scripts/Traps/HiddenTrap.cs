@@ -49,7 +49,7 @@ public class HiddenTrap : MonoBehaviour
                 Vector3 pointCurrent = new Vector3(this.transform.position.x, this.transform.position.y,
                     this.transform.position.z);
 
-                float param = 4 * Mathf.Abs(Mathf.Sin(Time.time));
+                float param = 6 * Mathf.Abs(Mathf.Sin(Time.time));
                 pointCurrent.y = m_translateYStart + param;
 
                 this.transform.position = pointCurrent;

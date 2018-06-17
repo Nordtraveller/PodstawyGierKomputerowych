@@ -99,7 +99,7 @@ public class PlayerControlls : MonoBehaviour
                 if (IsGrounded() && jumpDelay < 0)
                 {
                     jumpDelay = 0.02f;
-                    jumpForce = GameMetrics.playerJumpForce;
+                    jumpForce = GameMetrics.playerJumpForce/1.8f;
                 }
                 break;
 

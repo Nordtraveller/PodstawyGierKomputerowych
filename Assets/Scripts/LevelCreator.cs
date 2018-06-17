@@ -240,18 +240,18 @@ public class LevelCreator : MonoBehaviour
         if (levelCounter.levelsPassedCount == (unlockRate * 3) && GameMetrics.floorsUnlocked < 5)
         {
             GameMetrics.floorsUnlocked = 5;
-            StartCoroutine(ShowMessage("New floor unlocked! Chew you gum!"));
+            StartCoroutine(ShowMessage("New floor unlocked! Epilepsy!"));
         }
         if (levelCounter.levelsPassedCount == (unlockRate * 4) && GameMetrics.floorsUnlocked < 6)
         {
             GameMetrics.floorsUnlocked = 6;
-            StartCoroutine(ShowMessage("New floor unlocked! Epilepsy!"));
+            StartCoroutine(ShowMessage("New floor unlocked! Chew you gum!"));
         }
-        if (levelCounter.levelsPassedCount == (unlockRate * 5) && GameMetrics.floorsUnlocked < 7)
+        /*if (levelCounter.levelsPassedCount == (unlockRate * 5) && GameMetrics.floorsUnlocked < 7)
         {
             GameMetrics.floorsUnlocked = 7;
-            StartCoroutine(ShowMessage("New floor unlocked! Travel to the Moon!"));
-        }
+            StartCoroutine(ShowMessage("New floor unlocked! Chew you gum!"));
+        }*/
     }
 
     void CreateNewFloor()

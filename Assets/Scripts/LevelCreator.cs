@@ -98,6 +98,15 @@ public class LevelCreator : MonoBehaviour
             actualFloor.transform.position = Vector3.Lerp(Vector3.zero,
                 new Vector3(0f, -GameMetrics.tileSize, 0f), (Time.time - startTime) / GameMetrics.dropDuration);
 
+
+            float factor = (Time.time - startTime) / GameMetrics.dropDuration;
+
+            audioSrc.volume = factor;
+            audioSrc.volume = Mathf.Min(audioSrc.volume, 0.55f);
+
+            if (!audioSrc.isPlaying)
+                audioSrc.PlayOneShot(upperFloor.audioClip);
+
 			// Background
 			{
 
@@ -153,8 +162,8 @@ public class LevelCreator : MonoBehaviour
         else
         {
             if (!audioSrc.isPlaying)
-            audioSrc.PlayOneShot(actualFloor.audioClip);
-
+              audioSrc.PlayOneShot(actualFloor.audioClip);
+         
             timeLeft -= Time.deltaTime;
 
             int nTimeLeft = (int)timeLeft;
@@ -331,6 +340,8 @@ public class LevelCreator : MonoBehaviour
 		}
         startTime = Time.time;
         targetReached = false;
+        audioSrc.volume = 0.1f;
+        audioSrc.Stop();
     }
 
     IEnumerator ShowMessage(string msg)

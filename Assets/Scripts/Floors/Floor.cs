@@ -16,6 +16,8 @@ public class Floor : MonoBehaviour
     public int keyTileNumber;
     public int powerUpTileNumber;
 
+	public AudioClip audioClip;
+
     public Texture2D backgroundTexture;
 
 	public List<GameObject> GetTilesObjectList()

@@ -152,6 +152,9 @@ public class LevelCreator : MonoBehaviour
         }
         else
         {
+            if (!audioSrc.isPlaying)
+            audioSrc.PlayOneShot(actualFloor.audioClip);
+
             timeLeft -= Time.deltaTime;
 
             int nTimeLeft = (int)timeLeft;

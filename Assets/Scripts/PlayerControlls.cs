@@ -131,15 +131,6 @@ public class PlayerControlls : MonoBehaviour
             transform.position = new Vector3(level.actualFloor.exitTileNumber * GameMetrics.tileSize, position.y + GameMetrics.tileSize, position.z); 
             playerStatus.hasExtraTeleport = false;
         }
-        if (playerStatus.hasTrapDestroyer)
-        {
-            shield.SetActive(true);
-            shield.transform.position = new Vector3(transform.position.x + 0.25f, transform.position.y, transform.position.z);
-        }
-        if (!playerStatus.hasTrapDestroyer)
-        {
-            shield.SetActive(false);
-        }
     }
 
     void MovePlayer(float direction, float jumpForce)

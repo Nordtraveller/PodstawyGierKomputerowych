@@ -20,6 +20,16 @@ public class CameraController : MonoBehaviour {
             {
                 transform.position = newPosition;
             }
+            else if(newPosition.x < minX)
+            {
+                newPosition.x = minX;
+                transform.position = newPosition;
+            }
+            else if (newPosition.x > maxX)
+            {
+                newPosition.x = maxX;
+                transform.position = newPosition;
+            }
         }
 	}
 
